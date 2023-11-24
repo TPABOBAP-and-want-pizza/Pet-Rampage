@@ -6,9 +6,9 @@ public class CameraFollow2D : MonoBehaviour
 {
     [SerializeField] static Transform objectTransform;
     [SerializeField] static string objectTag = "";
-    [SerializeField] static float movingSpeed = 0.1f;
+    [SerializeField] float movingSpeed = 5f;
 
-    public static float MovingSpeed { get => movingSpeed; set => movingSpeed = value; }
+    public float MovingSpeed { get => movingSpeed; set => movingSpeed = value; }
     public static void SetTarget(string tag)
     {
         try
@@ -43,7 +43,7 @@ public class CameraFollow2D : MonoBehaviour
         {
             //Debug.Log("x - " + objectTransform.position.x + " y - " + objectTransform.position.y + " z - " + objectTransform.position.z);
 
-            Vector3 pos = Vector3.Lerp(transform.position, objectTransform.position, MovingSpeed * Time.deltaTime);
+            Vector3 pos = Vector3.Lerp(transform.position, new Vector3(objectTransform.position.x, objectTransform.position.y, -10), MovingSpeed * Time.deltaTime);
             transform.position = pos;
         }
     }
