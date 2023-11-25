@@ -27,7 +27,7 @@ public class Bullet : MonoBehaviourPunCallbacks
         public void SetBulletProperties(int damageValue, Vector2 shootDirection)
         {
             Damage = damageValue;
-            bulletSpeed = 10f; // ��������� �������� ���� �� �������
+            bulletSpeed = 50f; // ��������� �������� ���� �� �������
             GetComponent<Rigidbody2D>().velocity = shootDirection.normalized * -1 * bulletSpeed;
         }
 
