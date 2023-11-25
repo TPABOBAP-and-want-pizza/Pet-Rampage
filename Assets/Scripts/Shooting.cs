@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Photon.Pun;
 
-public class Shooting : MonoBehaviour
+public class Shooting : MonoBehaviourPunCallbacks
 {
     [SerializeField] float force = 100f;
     [SerializeField] int damage = 34;
@@ -11,17 +11,22 @@ public class Shooting : MonoBehaviour
     [SerializeField] bool canShoot = true;
     [SerializeField] float bulletSpeed = 10f;
     [SerializeField] GameObject bulletPrefab;
-    PhotonView view;
+    
 
-
-    void Update()
+    private void Start()
     {
-        
+        if (photonView.IsMine)
+        {
+            // Локальная инициализация объекта пули, только на клиенте, который выпустил пулю
+        }
+    }
+
+    private void Update()
+    {
+        if (photonView.IsMine)
         {
             CustRay();
         }
-        
-            
     }
 
     private void CustRay()
