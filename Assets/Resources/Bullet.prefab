@@ -139,6 +139,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d8405880237560844b436c77587129ee, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  bulletSpeed: 10
+  destroyTime: 2
 --- !u!198 &7774952495985854157
 ParticleSystem:
   m_ObjectHideFlags: 0
