@@ -12,6 +12,14 @@ public class PlayerMovement : MonoBehaviour
     private void Start()
     {
         view = GetComponent<PhotonView>();
+        if (view.Owner.IsLocal)
+        {
+            CameraFollow2D cameraFollow = Camera.main.GetComponent<CameraFollow2D>();
+            if (cameraFollow != null)
+            {
+                cameraFollow.player = gameObject.transform; // Устанавливаем игрока как объект, за которым следит камера
+            }
+        }
     }
 
     void Update()
