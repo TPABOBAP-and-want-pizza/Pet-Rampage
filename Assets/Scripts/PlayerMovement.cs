@@ -1,14 +1,28 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Photon.Pun;
 
 public class PlayerMovement : MonoBehaviour
 {
+    PhotonView view;
+
     [SerializeField] float speed = 1f;
+
+    private void Start()
+    {
+        view = GetComponent<PhotonView>();
+    }
+
     void Update()
     {
-        Move();
-        RotateTowardsMouse();
+        if (view.IsMine)
+        {
+            Move();
+            RotateTowardsMouse();
+        }
+
+
     }
 
     private void Move()
