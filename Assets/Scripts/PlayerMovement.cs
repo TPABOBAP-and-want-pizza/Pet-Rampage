@@ -46,19 +46,24 @@ public class PlayerMovement : MonoBehaviour
     }
     private void RotateTowardsMouse()
     {
-        Vector3 mousePositionScreen = Input.mousePosition;
-
-        mousePositionScreen.z = 10f; 
-
-        Vector3 mousePositionWorld = Camera.main.ScreenToWorldPoint(mousePositionScreen);
-
-        Vector3 directionToMouse = mousePositionWorld - transform.position;
-        directionToMouse.z = 0f; 
-
-        // Поворот гравця в напрямку миші
-        if (directionToMouse != Vector3.zero)
+        if (view.IsMine)
         {
-            transform.up = directionToMouse.normalized;
+            Vector3 mousePositionScreen = Input.mousePosition;
+
+            mousePositionScreen.z = 10f;
+
+            Vector3 mousePositionWorld = Camera.main.ScreenToWorldPoint(mousePositionScreen);
+
+            Vector3 directionToMouse = mousePositionWorld - transform.position;
+            directionToMouse.z = 0f;
+
+            // Поворот гравця в напрямку миші
+            if (directionToMouse != Vector3.zero)
+            {
+                transform.up = directionToMouse.normalized;
+            }
         }
+
+
     }
 }
