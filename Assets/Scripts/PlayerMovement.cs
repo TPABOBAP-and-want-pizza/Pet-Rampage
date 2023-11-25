@@ -1,14 +1,36 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Photon.Pun;
 
 public class PlayerMovement : MonoBehaviour
 {
+    PhotonView view;
+
     [SerializeField] float speed = 1f;
+
+    private void Start()
+    {
+        view = GetComponent<PhotonView>();
+        if (view.Owner.IsLocal)
+        {
+            CameraFollow2D cameraFollow = Camera.main.GetComponent<CameraFollow2D>();
+            if (cameraFollow != null)
+            {
+                cameraFollow.player = gameObject.transform; // Устанавливаем игрока как объект, за которым следит камера
+            }
+        }
+    }
+
     void Update()
     {
-        Move();
-        RotateTowardsMouse();
+        if (view.IsMine)
+        {
+            Move();
+            RotateTowardsMouse();
+        }
+
+
     }
 
     private void Move()
@@ -32,19 +54,24 @@ public class PlayerMovement : MonoBehaviour
     }
     private void RotateTowardsMouse()
     {
-        Vector3 mousePositionScreen = Input.mousePosition;
-
-        mousePositionScreen.z = 10f; 
-
-        Vector3 mousePositionWorld = Camera.main.ScreenToWorldPoint(mousePositionScreen);
-
-        Vector3 directionToMouse = mousePositionWorld - transform.position;
-        directionToMouse.z = 0f; 
-
-        // Поворот гравця в напрямку миші
-        if (directionToMouse != Vector3.zero)
+        if (view.IsMine)
         {
-            transform.up = directionToMouse.normalized;
+            Vector3 mousePositionScreen = Input.mousePosition;
+
+            mousePositionScreen.z = 10f;
+
+            Vector3 mousePositionWorld = Camera.main.ScreenToWorldPoint(mousePositionScreen);
+
+            Vector3 directionToMouse = mousePositionWorld - transform.position;
+            directionToMouse.z = 0f;
+
+            // Поворот гравця в напрямку миші
+            if (directionToMouse != Vector3.zero)
+            {
+                transform.up = directionToMouse.normalized;
+            }
         }
+
+
     }
 }

@@ -4,34 +4,12 @@ using UnityEngine;
 
 public class CameraFollow2D : MonoBehaviour
 {
-    [SerializeField] static Transform objectTransform;
-    [SerializeField] static string objectTag = "";
+    public Transform player; // ѕоле player, за которым будет следить камера
+
     [SerializeField] float movingSpeed = 5f;
 
     public float MovingSpeed { get => movingSpeed; set => movingSpeed = value; }
-    public static void SetTarget(string tag)
-    {
-        try
-        {
-            objectTransform = GameObject.FindGameObjectWithTag(objectTag).transform;
-        }
-        catch (System.NullReferenceException)
-        {
-            Debug.LogWarning("Object with tag " + objectTag + " not found.");
-        }
-    }
-    void Start()
-    {
-        if (objectTransform == null)
-        {
-            if (objectTag == "")
-            {
-                objectTag = "Player";
-            }
 
-            objectTransform = GameObject.FindGameObjectWithTag(objectTag).transform;
-        }
-    }
     void Update()
     {
         CameraFollow();
@@ -39,11 +17,9 @@ public class CameraFollow2D : MonoBehaviour
 
     private void CameraFollow()
     {
-        if (objectTransform)
+        if (player)
         {
-            //Debug.Log("x - " + objectTransform.position.x + " y - " + objectTransform.position.y + " z - " + objectTransform.position.z);
-
-            Vector3 pos = Vector3.Lerp(transform.position, new Vector3(objectTransform.position.x, objectTransform.position.y, -10), MovingSpeed * Time.deltaTime);
+            Vector3 pos = Vector3.Lerp(transform.position, new Vector3(player.position.x, player.position.y, -10), MovingSpeed * Time.deltaTime);
             transform.position = pos;
         }
     }
