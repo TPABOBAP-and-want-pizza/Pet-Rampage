@@ -11,10 +11,17 @@ public class Shooting : MonoBehaviour
     [SerializeField] bool canShoot = true;
     [SerializeField] float bulletSpeed = 10f;
     [SerializeField] GameObject bulletPrefab;
+    PhotonView view;
+
 
     void Update()
     {
-        CustRay();
+        
+        {
+            CustRay();
+        }
+        
+            
     }
 
     private void CustRay()
@@ -27,13 +34,12 @@ public class Shooting : MonoBehaviour
             canShoot = false;
             Invoke("CanShootTrue", delay);
 
-            // Создание пули через сеть с помощью PhotonNetwork.Instantiate
-            GameObject bullet = PhotonNetwork.Instantiate("Bullet", transform.position, Quaternion.identity);
-
-            bullet.GetComponent<Bullet>().Damage = damage;
-
+            // Создаем пулю только на локальном клиенте
             Vector2 shootDirection = new Vector2(transform.right.x, transform.right.y);
-            bullet.GetComponent<Rigidbody2D>().velocity = -shootDirection.normalized * bulletSpeed;
+            GameObject bullet = PhotonNetwork.Instantiate("Bullet", transform.position, Quaternion.identity, 0, new object[] { shootDirection });
+
+            // Устанавливаем свойства пули только на локальном клиенте
+            bullet.GetComponent<Bullet>().photonView.RPC("SetBulletProperties", RpcTarget.AllBuffered, damage, shootDirection);
         }
         //bullet.GetComponent<Rigidbody2D>().velocity = new Vector2(
         //    transform.forward.x + transform.rotation.z,

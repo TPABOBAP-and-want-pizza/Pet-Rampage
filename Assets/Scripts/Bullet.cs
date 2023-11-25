@@ -6,40 +6,38 @@ using Photon.Pun;
 public class Bullet : MonoBehaviourPunCallbacks
 {
     public int Damage { get; set; }
-    public float bulletSpeed = 10f;
-    public float destroyTime = 2f; // Время до уничтожения пули
+    public float bulletSpeed;
 
     void Start()
     {
-        StartCoroutine(SetVelocity());
-        Invoke("DestroyBullet", destroyTime); // Вызов уничтожения пули через время destroyTime
-    }
-
-    IEnumerator SetVelocity()
-    {
-        yield return new WaitForFixedUpdate(); // Ждем следующего FixedUpdate для корректного расчета физики
-
-        Vector2 mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-        Vector2 shootDirection = (mousePosition - (Vector2)transform.position).normalized;
-        Debug.Log("Shoot Direction: " + shootDirection); // Вывод значения в лог
-        GetComponent<Rigidbody2D>().velocity = shootDirection * bulletSpeed;
-    }
-
-    private void OnTriggerEnter2D(Collider2D collision)
-    {
-        if (collision.gameObject.GetComponent<IHitHandler>() != null)
+        if (photonView.IsMine)
         {
-            if (collision.gameObject.GetComponent<IDamageTaker>() != null)
-            {
-                collision.gameObject.GetComponent<IDamageTaker>().TakeDamage(Damage);
-            }
-            photonView.RPC("DestroyBullet", RpcTarget.AllBuffered);
+            // Локальная инициализация объекта пули, только на клиенте, который выпустил пулю
+            Vector2 shootDirection = (Vector2)photonView.InstantiationData[0];
+            GetComponent<Rigidbody2D>().velocity = shootDirection.normalized * -1 * bulletSpeed;
         }
     }
 
     [PunRPC]
-    void DestroyBullet()
+    public void SetBulletProperties(int damageValue, Vector2 shootDirection)
     {
-        Destroy(gameObject);
+        Damage = damageValue;
+        bulletSpeed = 10f; // Установка скорости пули на сервере
+        GetComponent<Rigidbody2D>().velocity = shootDirection.normalized * -1 * bulletSpeed;
+    }
+
+    void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (photonView.IsMine)
+        {
+            if (collision.gameObject.GetComponent<IHitHandler>() != null)
+            {
+                if (collision.gameObject.GetComponent<IDamageTaker>() != null)
+                {
+                    collision.gameObject.GetComponent<IDamageTaker>().TakeDamage(Damage);
+                }
+                PhotonNetwork.Destroy(gameObject);
+            }
+        }
     }
 }
