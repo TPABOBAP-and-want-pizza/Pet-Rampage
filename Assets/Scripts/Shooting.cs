@@ -6,7 +6,7 @@ public class Shooting : MonoBehaviour
 {
     [SerializeField] float force = 100f;
     [SerializeField] int damage = 34;
-    [SerializeField] float delay = 0.1f;
+    [SerializeField] float delay = 1f;
     [SerializeField] bool canShoot = true;
     [SerializeField] float bulletSpeed = 10f;
     [SerializeField] GameObject bulletPrefab;
@@ -21,6 +21,7 @@ public class Shooting : MonoBehaviour
         Ray2D ray = new Ray2D(transform.position, Input.mousePosition);
         Debug.DrawRay(transform.position, Input.mousePosition, Color.red);
 
+        if(canShoot)
         if (Input.GetMouseButtonDown(0))
         {
             canShoot = false;
