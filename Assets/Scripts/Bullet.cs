@@ -12,32 +12,36 @@ public class Bullet : MonoBehaviourPunCallbacks
     {
         if (photonView.IsMine)
         {
-            // Локальная инициализация объекта пули, только на клиенте, который выпустил пулю
+            // пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ, пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ, пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ
             Vector2 shootDirection = (Vector2)photonView.InstantiationData[0];
             GetComponent<Rigidbody2D>().velocity = shootDirection.normalized * -1 * bulletSpeed;
+            //   public float Force { get; set; }
+            //   private void Start()
+            //   {
+            //       Invoke("ToDestroy", 1f);
         }
+
     }
 
-    [PunRPC]
-    public void SetBulletProperties(int damageValue, Vector2 shootDirection)
-    {
-        Damage = damageValue;
-        bulletSpeed = 10f; // Установка скорости пули на сервере
-        GetComponent<Rigidbody2D>().velocity = shootDirection.normalized * -1 * bulletSpeed;
-    }
-
-    void OnTriggerEnter2D(Collider2D collision)
-    {
-        if (photonView.IsMine)
+        [PunRPC]
+        public void SetBulletProperties(int damageValue, Vector2 shootDirection)
         {
-            if (collision.gameObject.GetComponent<IHitHandler>() != null)
+            Damage = damageValue;
+            bulletSpeed = 10f; // пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ
+            GetComponent<Rigidbody2D>().velocity = shootDirection.normalized * -1 * bulletSpeed;
+        }
+
+        void OnTriggerEnter2D(Collider2D collision)
+        {
+            if (photonView.IsMine)
             {
                 if (collision.gameObject.GetComponent<IDamageTaker>() != null)
                 {
                     collision.gameObject.GetComponent<IDamageTaker>().TakeDamage(Damage);
                 }
-                PhotonNetwork.Destroy(gameObject);
+                Destroy(gameObject);
+            
             }
         }
-    }
+    
 }

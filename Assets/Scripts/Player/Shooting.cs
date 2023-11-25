@@ -17,7 +17,7 @@ public class Shooting : MonoBehaviourPunCallbacks
     {
         if (photonView.IsMine)
         {
-            // Локальная инициализация объекта пули, только на клиенте, который выпустил пулю
+            // пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ, пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ, пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ
         }
     }
 
@@ -39,11 +39,11 @@ public class Shooting : MonoBehaviourPunCallbacks
             canShoot = false;
             Invoke("CanShootTrue", delay);
 
-            // Создаем пулю только на локальном клиенте
+            // пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ
             Vector2 shootDirection = new Vector2(transform.right.x, transform.right.y);
             GameObject bullet = PhotonNetwork.Instantiate("Bullet", transform.position, Quaternion.identity, 0, new object[] { shootDirection });
 
-            // Устанавливаем свойства пули только на локальном клиенте
+            // пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ
             bullet.GetComponent<Bullet>().photonView.RPC("SetBulletProperties", RpcTarget.AllBuffered, damage, shootDirection);
         }
         //bullet.GetComponent<Rigidbody2D>().velocity = new Vector2(
@@ -53,23 +53,6 @@ public class Shooting : MonoBehaviourPunCallbacks
         //var hithandlers = target.GetComponents<IHitHandler>();
         //foreach (var i in hithandlers)
         //    i?.Handlehit(new HitInfo() { point = hit.point, force = force, direction = ray.direction, normalno = hit.normal });
-
-
-
-        //if (currentSelected.gameObject && currentSelected.gameObject != target)
-        //{
-        //    currentSelected.select = false;
-        //    currentSelected.CheckColor();
-        //    currentSelected.gameObject = null;
-        //}
-        //if (target.tag == "Target")
-        //{
-        //    currentSelected.gameObject = target;
-        //    currentSelected.select = true;
-        //    currentSelected.CheckColor();
-        //    //Debug.Log("Boo");
-        //}
-
     }
     private void CanShootTrue()
     {

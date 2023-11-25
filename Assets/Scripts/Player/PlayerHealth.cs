@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerHealth : MonoBehaviour, IHitHandler, IDamageTaker
+public class PlayerHealth : MonoBehaviour, IDamageTaker
 {
     [SerializeField] int maxHealth = 1000;
     private int currentHealth;
@@ -10,14 +10,8 @@ public class PlayerHealth : MonoBehaviour, IHitHandler, IDamageTaker
     {
         currentHealth = maxHealth;
     }
-    public void Handlehit(HitInfo info)
+    public void TakeDamage(int damage)
     {
-        throw new System.NotImplementedException();
-    }
-
-    void IDamageTaker.TakeDamage(int damage)
-    {
-
         currentHealth -= damage;
         Debug.Log($"currentPlayerHealth = {currentHealth}");
     }
