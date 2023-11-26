@@ -14,7 +14,7 @@ public class Bullet : MonoBehaviourPunCallbacks
         {
             // ��������� ������������� ������� ����, ������ �� �������, ������� �������� ����
             Vector2 shootDirection = (Vector2)photonView.InstantiationData[0];
-            GetComponent<Rigidbody2D>().velocity = shootDirection.normalized * -1 * bulletSpeed;
+            GetComponent<Rigidbody2D>().velocity = -shootDirection.normalized * bulletSpeed;
             //   public float Force { get; set; }
             //   private void Start()
             //   {
@@ -23,25 +23,27 @@ public class Bullet : MonoBehaviourPunCallbacks
 
     }
 
-        [PunRPC]
-        public void SetBulletProperties(int damageValue, Vector2 shootDirection)
-        {
-            Damage = damageValue;
-            bulletSpeed = 50f; // ��������� �������� ���� �� �������
-            GetComponent<Rigidbody2D>().velocity = shootDirection.normalized * -1 * bulletSpeed;
-        }
+    [PunRPC]
+    public void SetBulletProperties(int damageValue, Vector2 shootDirection)
+    {
+        Damage = damageValue;
+        bulletSpeed = 50f; // ��������� �������� ���� �� �������
+        GetComponent<Rigidbody2D>().velocity = shootDirection.normalized * -1 * bulletSpeed;
+    }
 
-        void OnTriggerEnter2D(Collider2D collision)
+    [PunRPC]
+    void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.gameObject.GetComponent<IDamageTaker>() != null)
         {
-            if (photonView.IsMine)
+            PhotonView targetPhotonView = collision.gameObject.GetComponent<PhotonView>();
+            if (targetPhotonView != null)
             {
-                if (collision.gameObject.GetComponent<IDamageTaker>() != null)
-                {
-                    collision.gameObject.GetComponent<IDamageTaker>().TakeDamage(Damage);
-                }
-                Destroy(gameObject);
-            
+                // Викликайте метод на іншому гравцеві через Photon
+                targetPhotonView.RPC("TakeDamage", RpcTarget.AllBuffered, Damage);
             }
         }
-    
+        PhotonNetwork.Destroy(gameObject);
+    }
+
 }

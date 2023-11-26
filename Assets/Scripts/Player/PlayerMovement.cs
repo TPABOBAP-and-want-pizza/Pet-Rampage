@@ -71,21 +71,4 @@ public class PlayerMovement : MonoBehaviour
             }
         }
     }
-
-    public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
-    {
-        // Відправлення та отримання даних через Photon
-        if (stream.IsWriting)
-        {
-            // Відправлення даних, наприклад, позиції та швидкості
-            stream.SendNext(rb.position);
-            stream.SendNext(rb.velocity);
-        }
-        else
-        {
-            // Отримання даних та оновлення позиції та швидкості
-            rb.position = (Vector2)stream.ReceiveNext();
-            rb.velocity = (Vector2)stream.ReceiveNext();
-        }
-    }
 }

@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Photon.Pun;
 
 public class Wall : MonoBehaviour, IDamageTaker
 {
@@ -11,13 +12,14 @@ public class Wall : MonoBehaviour, IDamageTaker
     {
         currentHealth = maxHealth;
     }
+    [PunRPC]
     public void TakeDamage(int damage)
     {
         currentHealth -= damage;
         Debug.Log($"currentHealth = {currentHealth}");
         if (currentHealth <= 0)
         {
-            Destroy(gameObject);
+            PhotonNetwork.Destroy(gameObject);
         }
     }
 }
