@@ -48,7 +48,7 @@ public class SpawnPlayers : MonoBehaviourPunCallbacks
 
     private void SpawnTrees()
     {
-        int treeCount = 500; // ���������� �������� ��� ������
+        int treeCount = 100; // ���������� �������� ��� ������
 
         float Xrange10 = (maxX - minX) / treeCount;
         float Yrange10 = (maxY - minY) / treeCount;
