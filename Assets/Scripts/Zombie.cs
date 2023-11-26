@@ -44,7 +44,6 @@ public class Zombie : MonoBehaviourPun, ISloweable, IPursue
         if (canAttack)
         {
             GameObject temp = collision.gameObject;
-            Debug.Log(temp.layer);
             if (temp.GetComponent<IDamageTaker>() != null && temp.tag == "Player")
             {
                 Debug.Log("Attack");

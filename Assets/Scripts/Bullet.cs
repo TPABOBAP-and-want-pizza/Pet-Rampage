@@ -31,9 +31,10 @@ public class Bullet : MonoBehaviourPunCallbacks
     void OnTriggerEnter2D(Collider2D collision)
     {
         GameObject target = collision.gameObject;
+        Debug.Log($"target = {target}");
         if (target.GetComponent<ISloweable>() != null)
         {
-            PhotonView targetPhotonView = collision.gameObject.GetComponent<PhotonView>();
+            PhotonView targetPhotonView = target.GetComponent<PhotonView>();
             if (targetPhotonView != null)
             {
                 targetPhotonView.RPC("SlowDown", RpcTarget.AllBuffered);
@@ -41,10 +42,10 @@ public class Bullet : MonoBehaviourPunCallbacks
         }
         if (target.GetComponent<IDamageTaker>() != null)
         {
-            PhotonView targetPhotonView = collision.gameObject.GetComponent<PhotonView>();
-            if (targetPhotonView != null )
+            PhotonView targetPhotonView = target.GetComponent<PhotonView>();
+            if (targetPhotonView != null)
             {
-                // Викликайте метод на іншому об'єкті через Photon
+                
                 targetPhotonView.RPC("TakeDamage", RpcTarget.AllBuffered, Damage);
             }
         }

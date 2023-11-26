@@ -39,14 +39,14 @@ public class SpawnPlayers : MonoBehaviourPunCallbacks
         {
             Vector2 randomPosition = new Vector2(Random.Range(minX, maxX), Random.Range(minY, maxY));
             GameObject tree = PhotonNetwork.InstantiateRoomObject(treePrefab.name, randomPosition, Quaternion.identity);
-            DontDestroyOnLoad(tree);
+            //DontDestroyOnLoad(tree);
         }
 
         for (int i = 0; i < 10; i++)
         {
             Vector2 randomPosition = new Vector2(Random.Range(minX, maxX), Random.Range(minY, maxY));
             GameObject zombie = PhotonNetwork.InstantiateRoomObject(zombiePrefab.name, randomPosition, Quaternion.identity);
-            DontDestroyOnLoad(zombie);
+            //DontDestroyOnLoad(zombie);
         }
     }
 }
