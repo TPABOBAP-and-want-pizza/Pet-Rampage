@@ -283,7 +283,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   force: 100
   damage: 34
-  delay: 1
+  delay: 0.2
   canShoot: 1
   bulletSpeed: 40
   bulletPrefab: {fileID: 5615962120512737680, guid: a97972b73553c954591357a5a3c8ddb8, type: 3}

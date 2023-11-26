@@ -6,7 +6,7 @@ using Photon.Pun;
 public class PlayerMovement : MonoBehaviour
 {
     PhotonView view;
-
+    Rigidbody2D rb;
     [SerializeField] float speed = 1f;
 
     private void Start()
@@ -14,6 +14,7 @@ public class PlayerMovement : MonoBehaviour
         view = GetComponent<PhotonView>();
         if (view.Owner.IsLocal)
         {
+            rb = transform.GetComponent<Rigidbody2D>();
             CameraFollow2D cameraFollow = Camera.main.GetComponent<CameraFollow2D>();
             if (cameraFollow != null)
             {
@@ -29,8 +30,6 @@ public class PlayerMovement : MonoBehaviour
             Move();
             RotateTowardsMouse();
         }
-
-
     }
 
     private void Move()
@@ -71,7 +70,22 @@ public class PlayerMovement : MonoBehaviour
                 transform.up = directionToMouse.normalized;
             }
         }
+    }
 
-
+    public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
+    {
+        // Відправлення та отримання даних через Photon
+        if (stream.IsWriting)
+        {
+            // Відправлення даних, наприклад, позиції та швидкості
+            stream.SendNext(rb.position);
+            stream.SendNext(rb.velocity);
+        }
+        else
+        {
+            // Отримання даних та оновлення позиції та швидкості
+            rb.position = (Vector2)stream.ReceiveNext();
+            rb.velocity = (Vector2)stream.ReceiveNext();
+        }
     }
 }
