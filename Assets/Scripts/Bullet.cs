@@ -12,13 +12,9 @@ public class Bullet : MonoBehaviourPunCallbacks
     {
         if (photonView.IsMine)
         {
-            // ��������� ������������� ������� ����, ������ �� �������, ������� �������� ����
             Vector2 shootDirection = (Vector2)photonView.InstantiationData[0];
             GetComponent<Rigidbody2D>().velocity = -shootDirection.normalized * bulletSpeed;
-            //   public float Force { get; set; }
-            //   private void Start()
-            //   {
-            //       Invoke("ToDestroy", 1f);
+            Invoke("ToDestroy", 1f);
         }
 
     }
@@ -27,22 +23,35 @@ public class Bullet : MonoBehaviourPunCallbacks
     public void SetBulletProperties(int damageValue, Vector2 shootDirection)
     {
         Damage = damageValue;
-        bulletSpeed = 50f; // ��������� �������� ���� �� �������
+        bulletSpeed = 50f;
         GetComponent<Rigidbody2D>().velocity = shootDirection.normalized * -1 * bulletSpeed;
     }
 
     [PunRPC]
     void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.gameObject.GetComponent<IDamageTaker>() != null)
+        GameObject target = collision.gameObject;
+        if (target.GetComponent<IDamageTaker>() != null)
+        {
+            PhotonView targetPhotonView = collision.gameObject.GetComponent<PhotonView>();
+            if (targetPhotonView != null )
+            {
+                // Викликайте метод на іншому об'єкті через Photon
+                targetPhotonView.RPC("TakeDamage", RpcTarget.AllBuffered, Damage);
+            }
+        }
+        if (target.GetComponent<ISloweable>() != null)
         {
             PhotonView targetPhotonView = collision.gameObject.GetComponent<PhotonView>();
             if (targetPhotonView != null)
             {
-                // Викликайте метод на іншому гравцеві через Photon
-                targetPhotonView.RPC("TakeDamage", RpcTarget.AllBuffered, Damage);
+                targetPhotonView.RPC("SlowDown", RpcTarget.AllBuffered, Damage);
             }
         }
+        PhotonNetwork.Destroy(gameObject);
+    }
+    private void ToDestroy()
+    {
         PhotonNetwork.Destroy(gameObject);
     }
 

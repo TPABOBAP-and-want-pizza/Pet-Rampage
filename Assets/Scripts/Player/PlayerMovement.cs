@@ -3,18 +3,19 @@ using System.Collections.Generic;
 using UnityEngine;
 using Photon.Pun;
 
-public class PlayerMovement : MonoBehaviour
+public class PlayerMovement : MonoBehaviour, ISloweable
 {
     PhotonView view;
-    Rigidbody2D rb;
-    [SerializeField] float speed = 1f;
+    [SerializeField] float maxSpeed = 2f;
+    [SerializeField] float slowdown = 1.5f;
+    private float currentSpeed;
 
     private void Start()
     {
+        currentSpeed = maxSpeed;
         view = GetComponent<PhotonView>();
         if (view.Owner.IsLocal)
         {
-            rb = transform.GetComponent<Rigidbody2D>();
             CameraFollow2D cameraFollow = Camera.main.GetComponent<CameraFollow2D>();
             if (cameraFollow != null)
             {
@@ -36,19 +37,19 @@ public class PlayerMovement : MonoBehaviour
     {
         if (Input.GetKey(KeyCode.D))
         {
-            transform.position += new Vector3(1, 0, 0) * speed * Time.deltaTime;
+            transform.position += new Vector3(1, 0, 0) * currentSpeed * Time.deltaTime;
         }
         if (Input.GetKey(KeyCode.A))
         {
-            transform.position += new Vector3(-1, 0, 0) * speed * Time.deltaTime;
+            transform.position += new Vector3(-1, 0, 0) * currentSpeed * Time.deltaTime;
         }
         if (Input.GetKey(KeyCode.W))
         {
-            transform.position += new Vector3(0, 1, 0) * speed * Time.deltaTime;
+            transform.position += new Vector3(0, 1, 0) * currentSpeed * Time.deltaTime;
         }
         if (Input.GetKey(KeyCode.S))
         {
-            transform.position += new Vector3(0, -1, 0) * speed * Time.deltaTime;
+            transform.position += new Vector3(0, -1, 0) * currentSpeed * Time.deltaTime;
         }
     }
     private void RotateTowardsMouse()
@@ -70,5 +71,16 @@ public class PlayerMovement : MonoBehaviour
                 transform.up = directionToMouse.normalized;
             }
         }
+    }
+
+    [PunRPC]
+    public void SlowDown()
+    {
+        currentSpeed /= slowdown;
+        Invoke("NormaliseSpeed", 0.3f);
+    }
+    private void NormaliseSpeed()
+    {
+        currentSpeed = maxSpeed;
     }
 }

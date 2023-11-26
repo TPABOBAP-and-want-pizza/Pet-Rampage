@@ -1,23 +1,21 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Photon.Pun;
 
-public class Zombie : MonoBehaviour, IDamageTaker
+public class Zombie : MonoBehaviourPun, ISloweable
 {
+    private Transform pursuedTransform;
     [SerializeField] int damage = 10;
     [SerializeField] float attackDelay = 2f;
     private bool canAttack = true;
     [SerializeField] float maxSpeed = 2f;
     [SerializeField] float slowdown = 2f;
     private float currentSpeed;
-    [SerializeField] int maxHealth = 100;
-    private Transform pursuedTransform;
-    private int currentHealth;
     void Start()
     {
         currentSpeed = maxSpeed;
-        currentHealth = maxHealth;
-        pursuedTransform = GameObject.FindGameObjectWithTag("Player").transform;
+        //pursuedTransform = GameObject.FindGameObjectWithTag("Player").transform;
     }
 
     void Update()
@@ -36,15 +34,15 @@ public class Zombie : MonoBehaviour, IDamageTaker
 
         transform.Translate(Vector3.right * currentSpeed * Time.deltaTime);
     }
-
-    private void OnTriggerEnter2D(Collider2D collision)
+    private void OnCollisionEnter2D(Collision2D collision)
     {
-        if(collision.gameObject.tag == "PLayer")
+        Debug.Log("enter");
+        if (collision.gameObject.tag == "PLayer")
             pursuedTransform = collision.transform;
     }
-
-    private void OnTriggerExit2D(Collider2D collision)
+    private void OnCollisionExit2D(Collision2D collision)
     {
+        Debug.Log("exit");
         if (collision.gameObject.tag == "PLayer")
             Invoke("Calm", 3f);
     }
@@ -53,9 +51,10 @@ public class Zombie : MonoBehaviour, IDamageTaker
     {
         if (canAttack)
         {
-            Debug.Log("Attack");
+            
             if (collision.gameObject.GetComponent<IDamageTaker>() != null)
             {
+                Debug.Log("Attack");
                 Invoke("NormaliseSpeed", 1f);
                 Invoke("SetCanAttackTrue", attackDelay);
                 canAttack = false;
@@ -64,19 +63,15 @@ public class Zombie : MonoBehaviour, IDamageTaker
             }
         }
     }
-
     private void Calm()
     {
         pursuedTransform = null;
     }
-
-    public void TakeDamage(int damage)
+    [PunRPC]
+    public void SlowDown()
     {
         currentSpeed /= slowdown;
         Invoke("NormaliseSpeed", 0.5f);
-        currentHealth -= damage;
-        if (currentHealth <= 0)
-            Destroy(gameObject);
     }
     private void NormaliseSpeed()
     {
