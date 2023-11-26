@@ -6,7 +6,7 @@ public class RandomTreeSprite : MonoBehaviour
 {
     void Start()
     {
-        SpriteRenderer treeSpriteRenderer = transform.parent.GetComponent<SpriteRenderer>();
+        SpriteRenderer treeSpriteRenderer = transform.GetComponent<SpriteRenderer>();
 
         if (treeSpriteRenderer != null)
         {
