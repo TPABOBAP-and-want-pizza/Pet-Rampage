@@ -48,27 +48,27 @@ public class SpawnPlayers : MonoBehaviourPunCallbacks
 
     private void SpawnTrees()
     {
-
-
-
-        int treeCount = 10; // Количество деревьев для спавна
+        int treeCount = 500; // Количество деревьев для спавна
 
         float Xrange10 = (maxX - minX) / treeCount;
         float Yrange10 = (maxY - minY) / treeCount;
 
         for (int i = 0; i < treeCount; i++)
         {
-  
-
-            Vector2 randomPosition = new Vector2(Random.Range(0, treeCount) * Xrange10 + minX, Random.Range(0, treeCount) * Yrange10 + minY);
+            Vector2 randomPosition = new Vector2(Random.Range(0, treeCount) * Xrange10 + minX + Random.Range(-2, 2), Random.Range(0, treeCount) * Yrange10 + minY + Random.Range(-1, 1));
 
             GameObject tree = PhotonNetwork.InstantiateRoomObject(treePrefab.name, randomPosition, Quaternion.identity);
             DontDestroyOnLoad(tree);
 
-
-            
-
-
+            // Получаем компонент SpriteRenderer объекта
+            SpriteRenderer treeRenderer = tree.GetComponent<SpriteRenderer>();
+            if (treeRenderer != null)
+            {
+                // Устанавливаем Sorting Layer и Sorting Order для правильного порядка отображения
+                treeRenderer.sortingLayerName = "TreesSortingLayer"; // Замените "YourSortingLayer" на ваш слой сортировки
+                treeRenderer.sortingOrder = i; // Используйте i для уникального порядка для каждого дерева
+            }
         }
     }
+
 }
