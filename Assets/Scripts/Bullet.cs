@@ -31,6 +31,14 @@ public class Bullet : MonoBehaviourPunCallbacks
     void OnTriggerEnter2D(Collider2D collision)
     {
         GameObject target = collision.gameObject;
+        if (target.GetComponent<ISloweable>() != null)
+        {
+            PhotonView targetPhotonView = collision.gameObject.GetComponent<PhotonView>();
+            if (targetPhotonView != null)
+            {
+                targetPhotonView.RPC("SlowDown", RpcTarget.AllBuffered);
+            }
+        }
         if (target.GetComponent<IDamageTaker>() != null)
         {
             PhotonView targetPhotonView = collision.gameObject.GetComponent<PhotonView>();
@@ -40,15 +48,7 @@ public class Bullet : MonoBehaviourPunCallbacks
                 targetPhotonView.RPC("TakeDamage", RpcTarget.AllBuffered, Damage);
             }
         }
-        if (target.GetComponent<ISloweable>() != null)
-        {
-            PhotonView targetPhotonView = collision.gameObject.GetComponent<PhotonView>();
-            if (targetPhotonView != null)
-            {
-                targetPhotonView.RPC("SlowDown", RpcTarget.AllBuffered, Damage);
-            }
-        }
-        PhotonNetwork.Destroy(gameObject);
+        ToDestroy();
     }
     private void ToDestroy()
     {

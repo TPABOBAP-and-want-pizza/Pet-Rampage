@@ -47,7 +47,6 @@ public class Zombie : MonoBehaviourPun, ISloweable, IPursue
             Debug.Log(temp.layer);
             if (temp.GetComponent<IDamageTaker>() != null && temp.tag == "Player")
             {
-                
                 Debug.Log("Attack");
                 Invoke("NormaliseSpeed", 1f);
                 Invoke("SetCanAttackTrue", attackDelay);
