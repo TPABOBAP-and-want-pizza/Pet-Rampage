@@ -35,18 +35,40 @@ public class SpawnPlayers : MonoBehaviourPunCallbacks
 
     private void SpawnTreesAndZombies()
     {
-        for (int i = 0; i < 10; i++)
-        {
-            Vector2 randomPosition = new Vector2(Random.Range(minX, maxX), Random.Range(minY, maxY));
-            GameObject tree = PhotonNetwork.InstantiateRoomObject(treePrefab.name, randomPosition, Quaternion.identity);
-            DontDestroyOnLoad(tree);
-        }
+        SpawnTrees();
 
         for (int i = 0; i < 10; i++)
         {
             Vector2 randomPosition = new Vector2(Random.Range(minX, maxX), Random.Range(minY, maxY));
+
             GameObject zombie = PhotonNetwork.InstantiateRoomObject(zombiePrefab.name, randomPosition, Quaternion.identity);
             DontDestroyOnLoad(zombie);
+        }
+    }
+
+    private void SpawnTrees()
+    {
+
+
+
+        int treeCount = 10; // Количество деревьев для спавна
+
+        float Xrange10 = (maxX - minX) / treeCount;
+        float Yrange10 = (maxY - minY) / treeCount;
+
+        for (int i = 0; i < treeCount; i++)
+        {
+  
+
+            Vector2 randomPosition = new Vector2(Random.Range(0, treeCount) * Xrange10 + minX, Random.Range(0, treeCount) * Yrange10 + minY);
+
+            GameObject tree = PhotonNetwork.InstantiateRoomObject(treePrefab.name, randomPosition, Quaternion.identity);
+            DontDestroyOnLoad(tree);
+
+
+            
+
+
         }
     }
 }
