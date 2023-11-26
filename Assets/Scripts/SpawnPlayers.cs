@@ -42,13 +42,13 @@ public class SpawnPlayers : MonoBehaviourPunCallbacks
             Vector2 randomPosition = new Vector2(Random.Range(minX, maxX), Random.Range(minY, maxY));
 
             GameObject zombie = PhotonNetwork.InstantiateRoomObject(zombiePrefab.name, randomPosition, Quaternion.identity);
-            DontDestroyOnLoad(zombie);
+            //DontDestroyOnLoad(zombie);
         }
     }
 
     private void SpawnTrees()
     {
-        int treeCount = 500; // Количество деревьев для спавна
+        int treeCount = 500; // пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ
 
         float Xrange10 = (maxX - minX) / treeCount;
         float Yrange10 = (maxY - minY) / treeCount;
@@ -60,13 +60,13 @@ public class SpawnPlayers : MonoBehaviourPunCallbacks
             GameObject tree = PhotonNetwork.InstantiateRoomObject(treePrefab.name, randomPosition, Quaternion.identity);
             DontDestroyOnLoad(tree);
 
-            // Получаем компонент SpriteRenderer объекта
+            // пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ SpriteRenderer пїЅпїЅпїЅпїЅпїЅпїЅпїЅ
             SpriteRenderer treeRenderer = tree.GetComponent<SpriteRenderer>();
             if (treeRenderer != null)
             {
-                // Устанавливаем Sorting Layer и Sorting Order для правильного порядка отображения
-                treeRenderer.sortingLayerName = "TreesSortingLayer"; // Замените "YourSortingLayer" на ваш слой сортировки
-                treeRenderer.sortingOrder = i; // Используйте i для уникального порядка для каждого дерева
+                // пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ Sorting Layer пїЅ Sorting Order пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
+                treeRenderer.sortingLayerName = "TreesSortingLayer"; // пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ "YourSortingLayer" пїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
+                treeRenderer.sortingOrder = i; // пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ i пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ
             }
         }
     }

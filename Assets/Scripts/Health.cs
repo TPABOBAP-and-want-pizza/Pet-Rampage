@@ -17,7 +17,7 @@ public class Health : MonoBehaviourPun, IDamageTaker
         if (photonView.IsMine)
         {
             currentHealth -= damage;
-            //Debug.Log($"currentPlayerHealth = {currentHealth}");
+            Debug.Log($"currentPlayerHealth = {currentHealth}");
             if (currentHealth <= 0)
             {
                 PhotonNetwork.Destroy(gameObject);
