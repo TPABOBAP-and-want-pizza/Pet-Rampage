@@ -44,7 +44,7 @@ public class SpawnPlayers : MonoBehaviourPunCallbacks
         SpawnTreesInClusters();
         SpawnRandomTreesOnMap();
 
-        for (int i = 0; i < 10; i++)
+        for (int i = 0; i < 30; i++)
         {
             Vector2 randomPosition = new Vector2(Random.Range(minX, maxX), Random.Range(minY, maxY));
 
