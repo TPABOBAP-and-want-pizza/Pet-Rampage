@@ -2,7 +2,6 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Photon.Pun;
-using UnityEngine.UIElements;
 
 public class SpawnPlayers : MonoBehaviourPunCallbacks
 {
@@ -14,6 +13,8 @@ public class SpawnPlayers : MonoBehaviourPunCallbacks
     public float maxX;
     public float minY;
     public float maxY;
+
+    
 
     private bool hasSpawned = false;
 
@@ -36,13 +37,7 @@ public class SpawnPlayers : MonoBehaviourPunCallbacks
 
     private void SpawnTreesAndZombies()
     {
-        for (int i = 0; i < 200; i++)
-        {
-            Vector2 randomPosition = new Vector2(Random.Range(minX, maxX), Random.Range(minY, maxY));
-
-            GameObject tree = PhotonNetwork.InstantiateRoomObject(treePrefab.name, randomPosition, Quaternion.identity);
-            DontDestroyOnLoad(tree);
-        }
+        SpawnTreesInClusters();
 
         for (int i = 0; i < 10; i++)
         {
@@ -50,6 +45,27 @@ public class SpawnPlayers : MonoBehaviourPunCallbacks
 
             GameObject zombie = PhotonNetwork.InstantiateRoomObject(zombiePrefab.name, randomPosition, Quaternion.identity);
             DontDestroyOnLoad(zombie);
+        }
+    }
+
+    private void SpawnTreesInClusters()
+    {
+        int treeClusterCount = 7; // Количество кластеров деревьев
+        int treesInCluster = 30; // Количество деревьев в кластере
+
+        for (int i = 0; i < treeClusterCount; i++)
+        {
+            Vector2 clusterPosition = new Vector2(Random.Range(minX + 17f, maxX - 17f), Random.Range(minY + 17f, maxY - 17f));
+
+            for (int j = 0; j < treesInCluster; j++)
+            {
+                Vector2 randomOffset = new Vector2(Random.Range(-17f, 17f), Random.Range(-17f, 17f)); // Случайное смещение в пределах кластера
+
+                Vector2 treePosition = clusterPosition + randomOffset;
+
+                GameObject tree = PhotonNetwork.InstantiateRoomObject(treePrefab.name, treePosition, Quaternion.identity);
+                DontDestroyOnLoad(tree);
+            }
         }
     }
 }
