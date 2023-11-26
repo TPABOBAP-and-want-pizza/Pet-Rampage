@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Photon.Pun;
+using UnityEngine.UIElements;
 
 public class SpawnPlayers : MonoBehaviourPunCallbacks
 {
@@ -35,7 +36,13 @@ public class SpawnPlayers : MonoBehaviourPunCallbacks
 
     private void SpawnTreesAndZombies()
     {
-        SpawnTrees();
+        for (int i = 0; i < 200; i++)
+        {
+            Vector2 randomPosition = new Vector2(Random.Range(minX, maxX), Random.Range(minY, maxY));
+
+            GameObject tree = PhotonNetwork.InstantiateRoomObject(treePrefab.name, randomPosition, Quaternion.identity);
+            DontDestroyOnLoad(tree);
+        }
 
         for (int i = 0; i < 10; i++)
         {
@@ -45,44 +52,4 @@ public class SpawnPlayers : MonoBehaviourPunCallbacks
             DontDestroyOnLoad(zombie);
         }
     }
-
-    private IEnumerator SpawnTreesWithDelay(List<Vector2> positions)
-    {
-        float delayBetweenTrees = 0.1f; // Задержка между спауном деревьев
-
-        foreach (Vector2 position in positions)
-        {
-            SpawnTreeAtPosition(position);
-            yield return new WaitForSeconds(delayBetweenTrees);
-        }
-    }
-
-    private void SpawnTrees()
-    {
-        int treeCount = 100; // Общее количество деревьев
-        List<Vector2> randomPositions = GenerateRandomPositions(treeCount);
-
-        randomPositions.Sort((a, b) => b.y.CompareTo(a.y)); // Сортировка позиций по значению Y в порядке убывания
-
-        StartCoroutine(SpawnTreesWithDelay(randomPositions));
-    }
-
-    private List<Vector2> GenerateRandomPositions(int count)
-    {
-        List<Vector2> positions = new List<Vector2>();
-        for (int i = 0; i < count; i++)
-        {
-            Vector2 randomPosition = new Vector2(Random.Range(minX, maxX), Random.Range(minY, maxY));
-            positions.Add(randomPosition);
-        }
-        return positions;
-    }
-
-    private void SpawnTreeAtPosition(Vector2 position)
-    {
-        GameObject tree = PhotonNetwork.InstantiateRoomObject(treePrefab.name, position, Quaternion.identity);
-        DontDestroyOnLoad(tree);
-    }
-
-
 }
