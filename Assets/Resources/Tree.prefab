@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 3461613681434690705}
   - component: {fileID: 3461613681434690707}
   - component: {fileID: 3461613681434690717}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Tree
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -173,7 +173,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7845603205896737326}
   - component: {fileID: 733401670764949406}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: SpawnTrees
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -217,7 +217,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2119350973081217922}
   - component: {fileID: 4233682574852596182}
-  m_Layer: 8
+  m_Layer: 10
   m_Name: Trigger
   m_TagString: Untagged
   m_Icon: {fileID: 0}

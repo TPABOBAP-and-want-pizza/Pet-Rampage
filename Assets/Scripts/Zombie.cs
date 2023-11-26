@@ -43,8 +43,10 @@ public class Zombie : MonoBehaviourPun, ISloweable, IPursue
     {
         if (canAttack)
         {
-            if (collision.gameObject.GetComponent<IDamageTaker>() != null)
+            GameObject temp = collision.gameObject;
+            if (temp.GetComponent<IDamageTaker>() != null && temp.layer != 10 && temp.layer != 11) //10 = Environment
             {
+                
                 Debug.Log("Attack");
                 Invoke("NormaliseSpeed", 1f);
                 Invoke("SetCanAttackTrue", attackDelay);
