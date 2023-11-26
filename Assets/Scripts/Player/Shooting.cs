@@ -24,7 +24,7 @@ public class Shooting : MonoBehaviourPunCallbacks
         Ray2D ray = new Ray2D(transform.position, Input.mousePosition);
         Debug.DrawRay(transform.position, Input.mousePosition, Color.red);
 
-        if (canShoot && Input.GetMouseButton(0))
+        if (canShoot && Input.GetMouseButtonDown(0))
         {
             canShoot = false;
             Invoke("CanShootTrue", delay);
