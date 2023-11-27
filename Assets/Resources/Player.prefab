@@ -268,7 +268,6 @@ MonoBehaviour:
   maxSpeed: 7
   slowdown: 2
   animator: {fileID: 4154358052979494661}
-  Gun_animator: {fileID: 0}
 --- !u!114 &379437326683550144
 MonoBehaviour:
   m_ObjectHideFlags: 0
