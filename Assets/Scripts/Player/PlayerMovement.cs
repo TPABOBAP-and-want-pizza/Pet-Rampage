@@ -10,6 +10,13 @@ public class PlayerMovement : MonoBehaviour, ISloweable
     [SerializeField] float slowdown = 1.5f;
     private float currentSpeed;
 
+    [Header("Player Animation Settings")]
+    public Animator animator;
+    
+
+    private bool isMoving = false;
+
+
     private void Start()
     {
         currentSpeed = maxSpeed;
@@ -30,6 +37,10 @@ public class PlayerMovement : MonoBehaviour, ISloweable
         {
             Move();
             RotateTowardsMouse();
+
+            isMoving = (Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.S) || Input.GetKey(KeyCode.D));
+            animator.SetFloat("Move", isMoving ? 1 : 0); // Если игрок движется, устанавливаем значение 1, иначе 0
+            
         }
     }
 
@@ -57,7 +68,6 @@ public class PlayerMovement : MonoBehaviour, ISloweable
         if (view.IsMine)
         {
             Vector3 mousePositionScreen = Input.mousePosition;
-
             mousePositionScreen.z = 10f;
 
             Vector3 mousePositionWorld = Camera.main.ScreenToWorldPoint(mousePositionScreen);
@@ -68,10 +78,14 @@ public class PlayerMovement : MonoBehaviour, ISloweable
             // Поворот гравця в напрямку миші
             if (directionToMouse != Vector3.zero)
             {
-                transform.up = directionToMouse.normalized;
+                float angle = Mathf.Atan2(directionToMouse.y, directionToMouse.x) * Mathf.Rad2Deg;
+                transform.GetChild(0).rotation = Quaternion.Euler(0f, 0f, angle + 180);
             }
         }
     }
+
+
+
 
     [PunRPC]
     public void SlowDown()
