@@ -5,13 +5,13 @@ using UnityEngine;
 public class Inventory : MonoBehaviour
 {
     private List<PickableItem> item = new List<PickableItem>();
-    [SerializeField] Transform inventory;
+    [SerializeField] GameObject inventory;
     void Start()
     {
-        int countParentofCells = inventory.childCount;
+        int countParentofCells = inventory.transform.childCount;
         for(int i = 0; i < countParentofCells; i++)
         {
-            Transform cellParent = inventory.GetChild(i);
+            Transform cellParent = inventory.transform.GetChild(i);
             if(cellParent.tag == "Cell")
             {
                 int count = cellParent.childCount;
@@ -26,10 +26,17 @@ public class Inventory : MonoBehaviour
             }
         }
     }
-
-
     void Update()
     {
-        
+        if (Input.GetKeyDown(KeyCode.E))
+            CheckInventory();
+    }
+    private void CheckInventory()
+    {
+        if (inventory.activeInHierarchy)
+        {
+            inventory.SetActive(false);
+        }
+        else inventory.SetActive(true);
     }
 }
