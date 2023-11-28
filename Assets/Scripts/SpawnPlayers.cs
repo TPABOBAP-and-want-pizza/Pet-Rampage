@@ -35,7 +35,7 @@ public class SpawnPlayers : MonoBehaviourPunCallbacks
 
     private void SpawnPlayer()
     {
-        Vector2 randomPosition = new Vector2(Random.Range(minX, maxX), Random.Range(minY, maxY));
+        Vector2 randomPosition = new Vector2(Random.Range(5, 10), Random.Range(5, 10));
         PhotonNetwork.Instantiate(playerPrefab.name, randomPosition, Quaternion.identity);
     }
 
