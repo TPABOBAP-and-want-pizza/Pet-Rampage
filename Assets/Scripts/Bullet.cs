@@ -8,7 +8,7 @@ public class Bullet : MonoBehaviourPunCallbacks
     public int Damage { get; set; }
     public float bulletSpeed;
     private int playerPhotonID;
-
+    private bool damageDealt = false;
     private Collider2D playerCollider;
 
     void Start()
@@ -43,6 +43,11 @@ public class Bullet : MonoBehaviourPunCallbacks
     [PunRPC]
     void OnTriggerEnter2D(Collider2D collision)
     {
+        if (damageDealt) // Если урон уже был нанесен, выходим из метода
+        {
+            return;
+        }
+
         GameObject target = collision.gameObject;
         PhotonView targetPhotonView = target.GetComponent<PhotonView>();
 
@@ -71,21 +76,19 @@ public class Bullet : MonoBehaviourPunCallbacks
             {
                 targetPhotonView.RPC("TakeDamage", RpcTarget.AllBuffered, Damage);
                 Debug.Log("Dealing damage to target.");
+                damageDealt = true; // Устанавливаем флаг, что урон был нанесен
             }
         }
-        ToDestroy();
+
+        if (damageDealt) // После нанесения урона вызываем уничтожение только один раз
+        {
+            ToDestroy();
+        }
     }
     private void ToDestroy()
     {
         PhotonNetwork.Destroy(gameObject);
     }
 
-    public void InitializeBullet(int damageValue, Vector2 shootDirection, Collider2D playerCol)
-    {
-        Damage = damageValue;
-        bulletSpeed = 50f;
-        GetComponent<Rigidbody2D>().velocity = shootDirection.normalized * -1 * bulletSpeed;
 
-        playerCollider = playerCol; // Сохраняем ссылку на коллайдер игрока
-    }
 }
