@@ -7,6 +7,7 @@ public class Bullet : MonoBehaviourPunCallbacks
 {
     public int Damage { get; set; }
     public float bulletSpeed;
+    private int playerPhotonID;
 
     private Collider2D playerCollider;
 
@@ -27,35 +28,49 @@ public class Bullet : MonoBehaviourPunCallbacks
         }
     }
 
-
     [PunRPC]
-    public void SetBulletProperties(int damageValue, Vector2 shootDirection)
+    public void SetBulletProperties(int damageValue, Vector2 shootDirection, int playerPhotonID)
     {
         Damage = damageValue;
         bulletSpeed = 50f;
         GetComponent<Rigidbody2D>().velocity = shootDirection.normalized * -1 * bulletSpeed;
+
+        // Сохраните playerPhotonID для дальнейшей проверки столкновений
+        this.playerPhotonID = playerPhotonID;
     }
+
 
     [PunRPC]
     void OnTriggerEnter2D(Collider2D collision)
     {
         GameObject target = collision.gameObject;
-        Debug.Log($"target = {target}");
+        PhotonView targetPhotonView = target.GetComponent<PhotonView>();
+
+        if (targetPhotonView != null)
+        {
+            int targetPlayerPhotonID = targetPhotonView.ViewID;
+
+            if (targetPlayerPhotonID == playerPhotonID)
+            {
+                Debug.Log("Bullet hit the same player. Ignoring damage and slow down.");
+                return; // Игнорируем вызовы RPC
+            }
+        }
+
         if (target.GetComponent<ISloweable>() != null)
         {
-            PhotonView targetPhotonView = target.GetComponent<PhotonView>();
             if (targetPhotonView != null)
             {
                 targetPhotonView.RPC("SlowDown", RpcTarget.AllBuffered);
+                Debug.Log("Slowing down target.");
             }
         }
         if (target.GetComponent<IDamageTaker>() != null)
         {
-            PhotonView targetPhotonView = target.GetComponent<PhotonView>();
             if (targetPhotonView != null)
             {
-                
                 targetPhotonView.RPC("TakeDamage", RpcTarget.AllBuffered, Damage);
+                Debug.Log("Dealing damage to target.");
             }
         }
         ToDestroy();

@@ -32,7 +32,12 @@ public class Shooting : MonoBehaviourPunCallbacks
             Vector2 shootDirection = new Vector2(transform.right.x, transform.right.y);
             GameObject bullet = PhotonNetwork.Instantiate("Bullet", transform.GetChild(0).position, Quaternion.identity, 0, new object[] { shootDirection });
 
-            bullet.GetComponent<Bullet>().InitializeBullet(damage, shootDirection, GetComponent<Collider2D>());
+            if (photonView.IsMine)
+            {
+                int playerPhotonID = photonView.ViewID; // Получаем Photon ID текущего игрока
+
+                bullet.GetComponent<Bullet>().photonView.RPC("SetBulletProperties", RpcTarget.AllBuffered, damage, shootDirection, playerPhotonID);
+            }
         }
     }
     private void CanShootTrue()
