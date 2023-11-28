@@ -8,7 +8,7 @@ public class Health : MonoBehaviourPun, IDamageTaker
 {
     [SerializeField] int maxHealth = 100;
     private int currentHealth;
-     private Image healthBar;
+    private Image healthBar;
     private bool isPlayer; // Переменная для проверки, является ли объект игроком
 
     private void Start()
