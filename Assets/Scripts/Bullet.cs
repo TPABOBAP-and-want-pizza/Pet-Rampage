@@ -8,16 +8,25 @@ public class Bullet : MonoBehaviourPunCallbacks
     public int Damage { get; set; }
     public float bulletSpeed;
 
+    private Collider2D playerCollider;
+
     void Start()
     {
         if (photonView.IsMine)
         {
             Vector2 shootDirection = (Vector2)photonView.InstantiationData[0];
-            GetComponent<Rigidbody2D>().velocity = -shootDirection.normalized * bulletSpeed;
+            Rigidbody2D rb = GetComponent<Rigidbody2D>();
+            rb.velocity = -shootDirection.normalized * bulletSpeed;
             Invoke("ToDestroy", 1f);
-        }
 
+            // Игнорирование коллизий пули с коллайдером игрока
+            if (playerCollider != null)
+            {
+                Physics2D.IgnoreCollision(playerCollider, GetComponent<Collider2D>());
+            }
+        }
     }
+
 
     [PunRPC]
     public void SetBulletProperties(int damageValue, Vector2 shootDirection)
@@ -56,4 +65,12 @@ public class Bullet : MonoBehaviourPunCallbacks
         PhotonNetwork.Destroy(gameObject);
     }
 
+    public void InitializeBullet(int damageValue, Vector2 shootDirection, Collider2D playerCol)
+    {
+        Damage = damageValue;
+        bulletSpeed = 50f;
+        GetComponent<Rigidbody2D>().velocity = shootDirection.normalized * -1 * bulletSpeed;
+
+        playerCollider = playerCol; // Сохраняем ссылку на коллайдер игрока
+    }
 }
