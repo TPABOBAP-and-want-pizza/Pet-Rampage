@@ -90,6 +90,12 @@ public class PlayerMovement : MonoBehaviour, ISloweable
     [PunRPC]
     public void SlowDown()
     {
+        if (view != null && view.IsMine)
+        {
+            // ≈сли цель - сам игрок, игнорируем замедление
+            return;
+        }
+
         currentSpeed /= slowdown;
         Invoke("NormaliseSpeed", 0.3f);
     }
