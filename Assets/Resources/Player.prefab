@@ -382,6 +382,7 @@ MonoBehaviour:
   observableSearch: 2
   ObservedComponents:
   - {fileID: 7846089559015353656}
+  - {fileID: 4804599810331884440}
   sceneViewId: 0
   InstantiationId: 0
   isRuntimeInstantiated: 0
@@ -429,6 +430,7 @@ GameObject:
   - component: {fileID: 6146127753293004531}
   - component: {fileID: 6146127753293004540}
   - component: {fileID: 6146127753293004541}
+  - component: {fileID: 4804599810331884440}
   m_Layer: 0
   m_Name: Weapon
   m_TagString: Untagged
@@ -521,6 +523,22 @@ MonoBehaviour:
   canShoot: 1
   bulletSpeed: 40
   bulletPrefab: {fileID: 5615962120512737680, guid: a97972b73553c954591357a5a3c8ddb8, type: 3}
+--- !u!114 &4804599810331884440
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6146127753293004530}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 627855c7f81362d41938ffe0b1475957, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_SynchronizePosition: 0
+  m_SynchronizeRotation: 1
+  m_SynchronizeScale: 0
+  m_UseLocal: 0
 --- !u!1 &7485834286124367746
 GameObject:
   m_ObjectHideFlags: 0
