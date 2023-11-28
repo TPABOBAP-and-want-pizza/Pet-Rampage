@@ -16,9 +16,8 @@ public class Health : MonoBehaviourPun, IDamageTaker
         currentHealth = maxHealth;
 
         isPlayer = GetComponent<PlayerMovement>() != null; // Проверяем, есть ли на объекте компонент PlayerMovement (это может быть компонент, который есть только у игрока)
-        if (isPlayer)
+        if (isPlayer && photonView.IsMine)
         {
-            
             if (healthBar == null)
             {
                 healthBar = GameObject.Find("Bar")?.GetComponent<Image>();
@@ -46,7 +45,6 @@ public class Health : MonoBehaviourPun, IDamageTaker
             {
                 UpdateHealthBar();
             }
-                
 
             if (currentHealth <= 0)
             {
@@ -57,7 +55,7 @@ public class Health : MonoBehaviourPun, IDamageTaker
 
     private void UpdateHealthBar()
     {
-        if (isPlayer && healthBar != null)
+        if (isPlayer && healthBar != null && photonView.IsMine)
         {
             float healthRatio = (float)currentHealth / maxHealth;
             healthBar.fillAmount = healthRatio;
