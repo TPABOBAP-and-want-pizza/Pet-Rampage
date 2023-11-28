@@ -229,6 +229,7 @@ MonoBehaviour:
   observableSearch: 2
   ObservedComponents:
   - {fileID: 4806195557061911937}
+  - {fileID: 7831935730679849353}
   sceneViewId: 0
   InstantiationId: 0
   isRuntimeInstantiated: 0
@@ -335,6 +336,7 @@ MonoBehaviour:
   maxSpeed: 7
   slowdown: 2
   animator: {fileID: 4154358052979494661}
+  spriteObject: {fileID: 3534288211271525780}
 --- !u!114 &379437326683550144
 MonoBehaviour:
   m_ObjectHideFlags: 0

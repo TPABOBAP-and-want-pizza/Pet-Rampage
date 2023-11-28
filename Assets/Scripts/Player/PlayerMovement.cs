@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Photon.Pun;
 
-public class PlayerMovement : MonoBehaviour, ISloweable
+public class PlayerMovement : MonoBehaviourPunCallbacks, ISloweable
 {
     PhotonView view;
     [SerializeField] float maxSpeed = 2f;
@@ -12,13 +12,22 @@ public class PlayerMovement : MonoBehaviour, ISloweable
 
     [Header("Player Animation Settings")]
     public Animator animator;
-    
+
+    [Header("Sprite")]
+    public GameObject spriteObject;
+    private SpriteRenderer spriteRenderer;
 
     private bool isMoving = false;
 
 
     private void Start()
     {
+        spriteRenderer = spriteObject.GetComponent<SpriteRenderer>();
+        if (spriteRenderer == null)
+        {
+            Debug.LogError("SpriteRenderer component not found in the child object!");
+        }
+
         currentSpeed = maxSpeed;
         view = GetComponent<PhotonView>();
         if (view.Owner.IsLocal)
@@ -48,11 +57,15 @@ public class PlayerMovement : MonoBehaviour, ISloweable
     {
         if (Input.GetKey(KeyCode.D))
         {
+            spriteRenderer.flipX = false;
             transform.position += new Vector3(1, 0, 0) * currentSpeed * Time.deltaTime;
+            photonView.RPC("FlipSprite", RpcTarget.All, false);
         }
         if (Input.GetKey(KeyCode.A))
         {
+            spriteRenderer.flipX = true;
             transform.position += new Vector3(-1, 0, 0) * currentSpeed * Time.deltaTime;
+            photonView.RPC("FlipSprite", RpcTarget.All, true);
         }
         if (Input.GetKey(KeyCode.W))
         {
@@ -63,6 +76,13 @@ public class PlayerMovement : MonoBehaviour, ISloweable
             transform.position += new Vector3(0, -1, 0) * currentSpeed * Time.deltaTime;
         }
     }
+
+    [PunRPC]
+    private void FlipSprite(bool flip)
+    {
+        spriteRenderer.flipX = flip;
+    }
+
     private void RotateTowardsMouse()
     {
         if (view.IsMine)

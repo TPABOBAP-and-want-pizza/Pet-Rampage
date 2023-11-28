@@ -46,6 +46,7 @@ MonoBehaviour:
   - OnTriggerEnter2D
   - SlowDown
   - SetAnimationNumber
+  - FlipSprite
   DisableAutoOpenWizard: 1
   ShowSettings: 0
   DevRegionSetOnce: 1
