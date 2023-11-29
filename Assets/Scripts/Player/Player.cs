@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Player : MonoBehaviour
 {
-    private Inventory inventory = new Inventory();
+    public Inventory inventory = new Inventory();
     private InventoryDisplay display;
     void Start()
     {
