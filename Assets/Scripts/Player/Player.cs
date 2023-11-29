@@ -8,13 +8,13 @@ public class Player : MonoBehaviour
     private InventoryDisplay display;
     void Start()
     {
-        display = GameObject.FindObjectOfType<InventoryDisplay>();
+        display = FindObjectOfType<InventoryDisplay>();
         display.AssignInventory(inventory);
-
+        display.gameObject.SetActive(false);
     }
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.E))//нада
+        if (Input.GetKeyDown(KeyCode.E))
             CheckInventory();
     }
     private void CheckInventory()
@@ -28,7 +28,7 @@ public class Player : MonoBehaviour
             PickableItem item = collision.gameObject.GetComponent<PickableItem>();
             inventory.AddItem(item.Item, item.Count);
 
-            Destroy(item.gameObject);
+            Photon.Pun.PhotonNetwork.Destroy(item.gameObject);
         }
     }
 }

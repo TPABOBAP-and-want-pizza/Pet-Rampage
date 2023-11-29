@@ -39,7 +39,8 @@ public class Health : MonoBehaviourPun, IDamageTaker
         if (photonView.IsMine)
         {
             currentHealth -= damage;
-            Debug.Log($"currentPlayerHealth = {currentHealth}");
+            if(gameObject.tag == "Player")
+                Debug.Log($"currentPlayerHealth = {currentHealth}");
 
             if (isPlayer)
             {

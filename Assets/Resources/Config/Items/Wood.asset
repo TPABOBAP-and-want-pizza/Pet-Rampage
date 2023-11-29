@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   name: Wood
   id: 0
-  sprite: {fileID: 21300000, guid: 78ef034d023e7784f916acfa9812c8fe, type: 3}
+  sprite: {fileID: 21300000, guid: 3f9fe38009e402848b16b307bd9a5be3, type: 3}
   stackable: 1
   maxCount: 64
   placeable: 1

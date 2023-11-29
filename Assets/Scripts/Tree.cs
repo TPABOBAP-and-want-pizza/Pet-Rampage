@@ -4,8 +4,9 @@ using UnityEngine;
 
 public class Tree : MonoBehaviour
 {
-    const float transparency = 0.5f;
+    const float Transparency = 0.5f;
     private SpriteRenderer renderer;
+
     private void Start()
     {
         renderer = gameObject.GetComponent<SpriteRenderer>();
@@ -17,7 +18,7 @@ public class Tree : MonoBehaviour
             if (renderer.material.HasProperty("_Color"))
             {
                 Color currentColor = renderer.material.color;
-                currentColor.a = transparency; 
+                currentColor.a = Transparency; 
 
                 renderer.material.color = currentColor;
             }
