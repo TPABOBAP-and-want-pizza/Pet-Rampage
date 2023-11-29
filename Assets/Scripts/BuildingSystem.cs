@@ -3,14 +3,32 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class BuildingSystem : MonoBehaviour
+public class BuildingSystem : MonoBehaviourPunCallbacks
 {
-    [SerializeField] private Inventory playerInventory; // Ссылка на инвентарь игрока
-    [SerializeField] private GameObject buildingPrefab; // Префаб блока для строительства
+    private Inventory playerInventory; // Ссылка на инвентарь игрока
+    [SerializeField] private GameObject buildingPrefab;
 
     private void Start()
     {
-        playerInventory = FindObjectOfType<Player>().inventory;
+        // Проверяем, что текущий объект BuildingSystem принадлежит локальному игроку
+        if (photonView.IsMine)
+        {
+            // Находим текущего игрока
+            GameObject playerObj = GameObject.FindGameObjectWithTag("Player");
+
+            // Получаем компонент Player на объекте игрока
+            Player localPlayer = playerObj.GetComponent<Player>();
+
+            // Если игрок найден, получаем его инвентарь
+            if (localPlayer != null)
+            {
+                playerInventory = localPlayer.inventory;
+            }
+            else
+            {
+                Debug.LogError("Local player inventory not found!");
+            }
+        }
     }
 
     private void Update()
@@ -30,7 +48,6 @@ public class BuildingSystem : MonoBehaviour
             newPosition.z = 0f;
             PhotonNetwork.Instantiate(buildingPrefab.name, newPosition, Quaternion.identity);
             playerInventory.RemoveItem(buildingPrefab.GetComponent<PickableItem>().Item);
-
         }
     }
 

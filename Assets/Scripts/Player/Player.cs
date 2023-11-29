@@ -6,6 +6,7 @@ public class Player : MonoBehaviour
 {
     public Inventory inventory = new Inventory();
     private InventoryDisplay display;
+
     void Start()
     {
         display = FindObjectOfType<InventoryDisplay>();
