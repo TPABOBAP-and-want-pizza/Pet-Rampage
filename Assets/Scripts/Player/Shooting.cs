@@ -30,7 +30,7 @@ public class Shooting : MonoBehaviourPunCallbacks
             Invoke("CanShootTrue", delay);
 
             Vector2 shootDirection = new Vector2(transform.right.x, transform.right.y);
-            GameObject bullet = PhotonNetwork.Instantiate("Bullet", transform.GetChild(0).position, Quaternion.identity, 0, new object[] { shootDirection });
+            GameObject bullet = PhotonNetwork.Instantiate(bulletPrefab.name, transform.GetChild(0).position, Quaternion.identity, 0, new object[] { shootDirection });
 
             if (photonView.IsMine)
             {

@@ -16,7 +16,6 @@ public class Inventory
 
     public ItemSlot[] Slots => slots;
 
-    // Добавление предмета в инвентарь
     public void AddItem(ItemInfo info, int count)
     {
         if (info == null)
@@ -42,6 +41,11 @@ public class Inventory
         }
     }
 
+    public string CheckSelectedItem(int selected)
+    {
+        return slots[selected]?.Item.name;
+    }
+
     // Проверка наличия предмета в инвентаре
     public bool HasItem(ItemInfo info)
     {
@@ -54,15 +58,13 @@ public class Inventory
         }
         return false;
     }
-
-    // Удаление предмета из инвентаря
     public void RemoveItem(ItemInfo info)
     {
         foreach (ItemSlot slot in slots)
         {
             if (slot.Item == info)
             {
-                slot.RemoveOneItem(); // Добавьте новый метод для удаления одного предмета из слота
+                slot.RemoveOneItem();
                 break;
             }
         }

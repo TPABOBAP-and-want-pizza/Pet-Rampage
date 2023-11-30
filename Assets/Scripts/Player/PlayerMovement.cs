@@ -19,6 +19,8 @@ public class PlayerMovement : MonoBehaviourPunCallbacks, ISloweable
 
     private bool isMoving = false;
 
+    private Transform selectedTransform;
+
 
     private void Start()
     {
@@ -85,7 +87,7 @@ public class PlayerMovement : MonoBehaviourPunCallbacks, ISloweable
 
     private void RotateTowardsMouse()
     {
-        if (view.IsMine)
+        if (view.IsMine && selectedTransform != null)
         {
             Vector3 mousePositionScreen = Input.mousePosition;
             mousePositionScreen.z = 10f;
@@ -99,13 +101,10 @@ public class PlayerMovement : MonoBehaviourPunCallbacks, ISloweable
             if (directionToMouse != Vector3.zero)
             {
                 float angle = Mathf.Atan2(directionToMouse.y, directionToMouse.x) * Mathf.Rad2Deg;
-                transform.GetChild(0).rotation = Quaternion.Euler(0f, 0f, angle + 180);
+                selectedTransform.rotation = Quaternion.Euler(0f, 0f, angle + 180);
             }
         }
     }
-
-
-
 
     [PunRPC]
     public void SlowDown()
@@ -118,6 +117,11 @@ public class PlayerMovement : MonoBehaviourPunCallbacks, ISloweable
 
         currentSpeed /= slowdown;
         Invoke("NormaliseSpeed", 0.3f);
+    }
+
+    public void SetSelectedTransform(Transform transform)
+    {
+        selectedTransform = transform;
     }
     private void NormaliseSpeed()
     {

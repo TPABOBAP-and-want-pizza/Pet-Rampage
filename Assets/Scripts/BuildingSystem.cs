@@ -46,7 +46,7 @@ public class BuildingSystem : MonoBehaviourPunCallbacks
         {
             Vector3 newPosition = GetMousePositionInWorld();
             newPosition.z = 0f;
-            PhotonNetwork.Instantiate(buildingPrefab.name, newPosition, Quaternion.identity);
+            PhotonNetwork.Instantiate($"Items/{buildingPrefab.name}", newPosition, Quaternion.identity);
             playerInventory.RemoveItem(buildingPrefab.GetComponent<PickableItem>().Item);
         }
     }
