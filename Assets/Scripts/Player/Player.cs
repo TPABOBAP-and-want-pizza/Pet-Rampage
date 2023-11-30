@@ -1,27 +1,22 @@
+using Photon.Pun;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Player : MonoBehaviour
+public class Player : MonoBehaviourPun
 {
     public Inventory inventory = new Inventory();
     private InventoryDisplay display;
 
     void Start()
     {
-        display = FindObjectOfType<InventoryDisplay>();
-        display.AssignInventory(inventory);
-        display.gameObject.SetActive(false);
+        if (photonView.IsMine)
+        {
+            display = FindObjectOfType<InventoryDisplay>();
+            display.AssignInventory(inventory);
+        }
     }
-    void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.E))
-            CheckInventory();
-    }
-    private void CheckInventory()
-    {
-        display.gameObject.SetActive(!display.gameObject.activeSelf);
-    }
+
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.gameObject.layer == 13)//13 = pickableItem

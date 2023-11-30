@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Inventory
 {
-    private ItemSlot[] slots = new ItemSlot[27];
+    private ItemSlot[] slots = new ItemSlot[9];
 
     public Inventory()
     {
