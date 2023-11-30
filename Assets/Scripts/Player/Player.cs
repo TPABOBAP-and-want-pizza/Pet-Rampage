@@ -1,16 +1,20 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Photon.Pun;
 
-public class Player : MonoBehaviour
+public class Player : MonoBehaviourPun
 {
     public Inventory inventory = new Inventory();
     private InventoryDisplay display;
 
     void Start()
     {
-        display = FindObjectOfType<InventoryDisplay>();
-        display.AssignInventory(inventory);
+        if (photonView.IsMine)
+        {
+            display = FindObjectOfType<InventoryDisplay>();
+            display.AssignInventory(inventory);
+        }
     }
     private void OnTriggerEnter2D(Collider2D collision)
     {
