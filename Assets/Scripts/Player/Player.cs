@@ -11,16 +11,6 @@ public class Player : MonoBehaviour
     {
         display = FindObjectOfType<InventoryDisplay>();
         display.AssignInventory(inventory);
-        display.gameObject.SetActive(false);
-    }
-    void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.E))
-            CheckInventory();
-    }
-    private void CheckInventory()
-    {
-        display.gameObject.SetActive(!display.gameObject.activeSelf);
     }
     private void OnTriggerEnter2D(Collider2D collision)
     {
