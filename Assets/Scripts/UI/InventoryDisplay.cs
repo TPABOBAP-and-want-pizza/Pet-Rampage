@@ -5,7 +5,10 @@ using UnityEngine;
 
 public class InventoryDisplay : MonoBehaviour
 {
+    private const int HotBarSize = 9;
     [SerializeField] private ItemDisplay itemDisplayPrefab;
+    [SerializeField] private Transform inventorySlotsParent;
+    [SerializeField] private Transform hotBarSlotsParent;
     private Inventory assignedInventory;
     private List<ItemDisplay> displays = new List<ItemDisplay>();
     
@@ -20,14 +23,23 @@ public class InventoryDisplay : MonoBehaviour
         for (int i = 0; i < assignedInventory.Slots.Length; i++)
         {
             ItemSlot slot = assignedInventory.Slots[i];
-            AddAtHotBar(slot);
-
+            if (i < HotBarSize) { 
+                AddAtHotBar(slot);
+            }
+            else AddAtInventory(slot);
         }
     }
 
     private void AddAtHotBar(ItemSlot slot)
     {
-        ItemDisplay itemDisplay = CreateDisplay(transform);
+        ItemDisplay itemDisplay = CreateDisplay(hotBarSlotsParent);
+        WireUpEvents(itemDisplay, slot);
+        displays.Add(itemDisplay);
+    }
+
+    private void AddAtInventory(ItemSlot slot)
+    {
+        ItemDisplay itemDisplay = CreateDisplay(inventorySlotsParent);
         WireUpEvents(itemDisplay, slot);
         displays.Add(itemDisplay);
     }
