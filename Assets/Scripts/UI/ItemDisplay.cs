@@ -13,12 +13,13 @@ public class ItemDisplay : MonoBehaviour
     {
         Sprite sprite = info != null ? info.sprite : null;
         string temp = count > 0 ? count.ToString() : "";
-        ShowInfo(sprite, temp);
+        ShowInfo(sprite, temp, info.stackable);
     }
 
-    private void ShowInfo(Sprite sprite, string str)
+    private void ShowInfo(Sprite sprite, string str, bool showText)
     {
         image.sprite = sprite;
-        text.text = str;
+        if(showText)
+            text.text = str;
     }
 }
