@@ -49,6 +49,11 @@ public class Bullet : MonoBehaviourPunCallbacks
         }
 
         GameObject target = collision.gameObject;
+        if(target.tag == "Tree")
+        {
+            ToDestroy();
+            return;
+        }
         PhotonView targetPhotonView = target.GetComponent<PhotonView>();
 
         if (targetPhotonView != null)
