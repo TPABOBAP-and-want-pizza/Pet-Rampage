@@ -5,7 +5,7 @@ using Photon.Pun;
 
 public class Blow : MonoBehaviour
 {
-    [SerializeField] private int damage = 13;
+    [SerializeField] private int damage = 100;
     private Animator animator;
     private bool canBlow = true;
     private Vector2 raycastDirection;
@@ -19,7 +19,7 @@ public class Blow : MonoBehaviour
         if (Input.GetMouseButtonDown(0) && canBlow)
         {
             canBlow = false;
-            Invoke("SetCanBlowTrue", 0.5f);
+            Invoke("SetCanBlowTrue", 0.8f);
             Vector2 mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
 
             raycastDirection = mousePosition - (Vector2)transform.position;
