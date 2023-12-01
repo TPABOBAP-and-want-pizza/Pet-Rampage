@@ -5,7 +5,6 @@ public class ItemInfo:ScriptableObject
     public string name;
     public int id;
     public Sprite sprite;
-    public int weapon;
     public bool stackable;
     public int maxCount;
     public bool placeable;
