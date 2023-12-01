@@ -1,28 +1,20 @@
 using Photon.Pun;
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class BuildingSystem : MonoBehaviourPunCallbacks
 {
-    private Inventory playerInventory; // Ссылка на инвентарь игрока
+    private Inventory playerInventory;
     [SerializeField] private GameObject buildingPrefab_item;
     [SerializeField] private GameObject buildingPrefab_block;
 
-    private Dictionary<Vector3, GameObject> placedBlocks = new Dictionary<Vector3, GameObject>();
-
     private void Start()
     {
-        // Проверяем, что текущий объект BuildingSystem принадлежит локальному игроку
         if (photonView.IsMine)
         {
-            // Находим текущего игрока
             GameObject playerObj = GameObject.FindGameObjectWithTag("Player");
-
-            // Получаем компонент Player на объекте игрока
             Player localPlayer = playerObj.GetComponent<Player>();
 
-            // Если игрок найден, получаем его инвентарь
             if (localPlayer != null)
             {
                 playerInventory = localPlayer.inventory;
@@ -44,43 +36,49 @@ public class BuildingSystem : MonoBehaviourPunCallbacks
 
     private void BuildBlock()
     {
-        // Проверяем наличие блока в инвентаре игрока
         if (playerInventory.HasItem(buildingPrefab_item.GetComponent<PickableItem>().Item))
         {
-            Vector3 newPosition = GetMousePositionInWorld();
-            newPosition.z = 0f;
+            Vector3 newPosition = GetRoundedMousePositionInWorld();
 
-            // Проверяем наличие блока в этой позиции
-            if (!placedBlocks.ContainsKey(newPosition))
+            if (!IsPositionOccupied(newPosition))
             {
                 PhotonNetwork.Instantiate($"Items/{buildingPrefab_block.name}", newPosition, Quaternion.identity);
                 playerInventory.RemoveItem(buildingPrefab_item.GetComponent<PickableItem>().Item);
 
-                // Добавляем размещенный блок в словарь
-                GameObject newBlock = GameObject.Find($"Items/{buildingPrefab_block.name}(Clone)");
-                placedBlocks.Add(newPosition, newBlock);
+                // Отправляем информацию о новом блоке всем игрокам
+                photonView.RPC("RPC_AddNewBlock", RpcTarget.All, newPosition);
             }
             else
             {
                 Debug.Log("Блок уже установлен в этой позиции.");
-                // Можно добавить сообщение об ошибке или выполнить другие действия при попытке установить блок в занятую позицию
             }
         }
     }
 
-    private Vector3 GetMousePositionInWorld()
+    private Vector3 GetRoundedMousePositionInWorld()
     {
         Vector3 mousePos = Input.mousePosition;
         mousePos.z = Camera.main.transform.position.z;
         Vector3 worldPos = Camera.main.ScreenToWorldPoint(mousePos);
 
-        // Округляем координаты до ближайших значений, кратных 10
         float roundedX = Mathf.Round(worldPos.x / 1) * 1;
         float roundedY = Mathf.Round(worldPos.y / 1) * 1;
 
-        // Возвращаем округленные координаты
         return new Vector3(roundedX, roundedY, 0f);
     }
 
+    private bool IsPositionOccupied(Vector3 position)
+    {
+        // Проверяем, занято ли место на данной позиции
+        return PhotonNetwork.CurrentRoom.CustomProperties.ContainsKey(position.ToString());
+    }
 
+    [PunRPC]
+    private void RPC_AddNewBlock(Vector3 position)
+    {
+        // Добавляем новый блок в Custom Properties, чтобы остальные игроки знали, что эта позиция занята
+        ExitGames.Client.Photon.Hashtable properties = new ExitGames.Client.Photon.Hashtable();
+        properties.Add(position.ToString(), true);
+        PhotonNetwork.CurrentRoom.SetCustomProperties(properties);
+    }
 }
