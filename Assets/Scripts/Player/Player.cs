@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Photon.Pun;
+using UnityEngine.UI;
 
 public class Player : MonoBehaviourPun
 {
@@ -9,9 +10,18 @@ public class Player : MonoBehaviourPun
     private int highlightedSlotIndex = 0;
     private InventoryDisplay display;
     private GameObject selectedObject;
+    private PhotonView view;
+
+    public Text textName;
 
     void Start()
     {
+        view = GetComponent<PhotonView>(); // Присвоение значения view
+        if (view != null && view.Owner != null)
+        {
+            textName.text = view.Owner.NickName;
+        }
+
         if (photonView.IsMine)
         {
             display = FindObjectOfType<InventoryDisplay>();
