@@ -4,14 +4,23 @@ using UnityEngine;
 using Photon.Pun;
 using UnityEngine.UI;
 
+<<<<<<< HEAD
 public class Player : MonoBehaviourPun, IPunInstantiateMagicCallback
 {
     [SerializeField] private ItemInfo info;
+=======
+public class Player : MonoBehaviourPun
+{
+>>>>>>> dev
     public Inventory inventory = new Inventory();
     private int highlightedSlotIndex = 0;
     private InventoryDisplay display;
     private GameObject selectedObject;
     private PhotonView view;
+<<<<<<< HEAD
+=======
+    private GameObject[] inventorySlots;
+>>>>>>> dev
 
     public Text textName;
 
@@ -27,6 +36,7 @@ public class Player : MonoBehaviourPun, IPunInstantiateMagicCallback
         {
             display = FindObjectOfType<InventoryDisplay>();
             display.AssignInventory(inventory);
+<<<<<<< HEAD
             inventory.AddItem(info, 1);
             InstantiateItemInHand();
         }
@@ -34,6 +44,15 @@ public class Player : MonoBehaviourPun, IPunInstantiateMagicCallback
 
     private void Update()
     {
+=======
+        }
+    }
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.E))
+            PhotonNetwork.Instantiate("Items/BananaGun", transform.position + Vector3.left, Quaternion.identity);
+
+>>>>>>> dev
         float scrollInput = Input.GetAxis("Mouse ScrollWheel");
         if (scrollInput != 0f)
         {
@@ -43,6 +62,7 @@ public class Player : MonoBehaviourPun, IPunInstantiateMagicCallback
 
             highlightedSlotIndex = (highlightedSlotIndex + inventory.Slots.Length) % inventory.Slots.Length;
             InstantiateItemInHand();
+<<<<<<< HEAD
         }
     }
 
@@ -52,12 +72,24 @@ public class Player : MonoBehaviourPun, IPunInstantiateMagicCallback
         //{
             if (selectedObject != null)
                 PhotonNetwork.Destroy(selectedObject);
+=======
+            HighlightSelectedSlot();
+        }
+    }
+    private void InstantiateItemInHand()
+    {
+        if (photonView.IsMine)
+        {
+            if (selectedObject != null)
+                Destroy(selectedObject);
+>>>>>>> dev
 
             string name = inventory.CheckSelectedItem(highlightedSlotIndex);
             Debug.Log($"name = {name}");
 
             if (name != null)
             {
+<<<<<<< HEAD
                 object[] instantiationData = { photonView.ViewID };
                 selectedObject = PhotonNetwork.Instantiate("Prefabs/" + name, transform.position, Quaternion.identity, 0, instantiationData);
                 selectedObject.transform.SetParent(transform.GetComponent<PhotonView>().transform);
@@ -68,6 +100,13 @@ public class Player : MonoBehaviourPun, IPunInstantiateMagicCallback
         //}
     }
 
+=======
+                selectedObject = Instantiate(Resources.Load("Prefabs/" + name) as GameObject, transform.position, Quaternion.identity, transform);
+                transform.GetComponent<PlayerMovement>().SetSelectedTransform(selectedObject?.transform);
+            }
+        }
+    }
+>>>>>>> dev
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.gameObject.layer == 13)//13 = pickableItem
@@ -76,6 +115,7 @@ public class Player : MonoBehaviourPun, IPunInstantiateMagicCallback
             inventory.AddItem(item.Item, item.Count);
             InstantiateItemInHand();
 
+<<<<<<< HEAD
             PhotonNetwork.Destroy(item.gameObject);
         }
     }
@@ -95,4 +135,22 @@ public class Player : MonoBehaviourPun, IPunInstantiateMagicCallback
             Debug.Log("parent = " + selectedObject.transform.parent);
         }
     }
+=======
+            Photon.Pun.PhotonNetwork.Destroy(item.gameObject);
+        }
+    }
+
+
+    private void ClearAllSlotHighlights()
+    {
+        foreach (var slot in inventorySlots)
+        {
+            slot.GetComponent<Image>().color = Color.white; // —брасываем цвет всех €чеек инвентар€ на белый (или на ваш выбор)
+        }
+    }
+    private void HighlightSelectedSlot()
+    {
+        display.SetSelectedCell(highlightedSlotIndex);
+    }
+>>>>>>> dev
 }

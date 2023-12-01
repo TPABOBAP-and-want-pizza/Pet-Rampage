@@ -19,7 +19,11 @@ public class PlayerMovement : MonoBehaviourPunCallbacks, ISloweable
 
     private bool isMoving = false;
 
+<<<<<<< HEAD
     [SerializeField] private Transform selectedTransform;
+=======
+    private Transform selectedTransform;
+>>>>>>> dev
 
 
     private void Start()

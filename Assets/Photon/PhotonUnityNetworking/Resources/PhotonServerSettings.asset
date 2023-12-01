@@ -28,7 +28,7 @@ MonoBehaviour:
     AuthMode: 0
     EnableLobbyStatistics: 0
     NetworkLogging: 1
-  DevRegion: 
+  DevRegion: eu;
   PunLogging: 2
   EnableSupportLogger: 0
   RunInBackground: 1
@@ -42,6 +42,12 @@ MonoBehaviour:
   - DestroyBullet
   - FireBullet
   - SetBulletProperties
+  - TakeDamage
+  - OnTriggerEnter2D
+  - SlowDown
+  - SetAnimationNumber
+  - FlipSprite
+  - SyncColorRPC
   DisableAutoOpenWizard: 1
   ShowSettings: 0
   DevRegionSetOnce: 1

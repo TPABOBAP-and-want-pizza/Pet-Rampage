@@ -7,37 +7,93 @@ public class Bullet : MonoBehaviourPunCallbacks
 {
     public int Damage { get; set; }
     public float bulletSpeed;
+    private int playerPhotonID;
+    private bool damageDealt = false;
+    private Collider2D playerCollider;
 
     void Start()
     {
         if (photonView.IsMine)
         {
-            // Локальная инициализация объекта пули, только на клиенте, который выпустил пулю
             Vector2 shootDirection = (Vector2)photonView.InstantiationData[0];
-            GetComponent<Rigidbody2D>().velocity = shootDirection.normalized * -1 * bulletSpeed;
+            Rigidbody2D rb = GetComponent<Rigidbody2D>();
+            rb.velocity = -shootDirection.normalized * bulletSpeed;
+            Invoke("ToDestroy", 1f);
+
+            // Игнорирование коллизий пули с коллайдером игрока
+            if (playerCollider != null)
+            {
+                Physics2D.IgnoreCollision(playerCollider, GetComponent<Collider2D>());
+            }
         }
     }
 
     [PunRPC]
-    public void SetBulletProperties(int damageValue, Vector2 shootDirection)
+    public void SetBulletProperties(int damageValue, Vector2 shootDirection, int playerPhotonID)
     {
         Damage = damageValue;
-        bulletSpeed = 10f; // Установка скорости пули на сервере
+        bulletSpeed = 50f;
         GetComponent<Rigidbody2D>().velocity = shootDirection.normalized * -1 * bulletSpeed;
+
+        // Сохраните playerPhotonID для дальнейшей проверки столкновений
+        this.playerPhotonID = playerPhotonID;
     }
 
+
+    [PunRPC]
     void OnTriggerEnter2D(Collider2D collision)
     {
-        if (photonView.IsMine)
+        if (damageDealt) // Если урон уже был нанесен, выходим из метода
         {
-            if (collision.gameObject.GetComponent<IHitHandler>() != null)
+            return;
+        }
+
+        GameObject target = collision.gameObject;
+        if(target.tag == "Tree")
+        {
+            ToDestroy();
+            return;
+        }
+        PhotonView targetPhotonView = target.GetComponent<PhotonView>();
+
+        if (targetPhotonView != null)
+        {
+            int targetPlayerPhotonID = targetPhotonView.ViewID;
+
+            if (targetPlayerPhotonID == playerPhotonID)
             {
-                if (collision.gameObject.GetComponent<IDamageTaker>() != null)
-                {
-                    collision.gameObject.GetComponent<IDamageTaker>().TakeDamage(Damage);
-                }
-                PhotonNetwork.Destroy(gameObject);
+                Debug.Log("Bullet hit the same player. Ignoring damage and slow down.");
+                return; // Игнорируем вызовы RPC
             }
         }
+
+        if (target.GetComponent<ISloweable>() != null)
+        {
+            if (targetPhotonView != null)
+            {
+                targetPhotonView.RPC("SlowDown", RpcTarget.AllBuffered);
+                Debug.Log("Slowing down target.");
+            }
+        }
+        if (target.GetComponent<IDamageTaker>() != null)
+        {
+            if (targetPhotonView != null)
+            {
+                targetPhotonView.RPC("TakeDamage", RpcTarget.AllBuffered, Damage);
+                Debug.Log("Dealing damage to target.");
+                damageDealt = true; // Устанавливаем флаг, что урон был нанесен
+            }
+        }
+
+        if (damageDealt) // После нанесения урона вызываем уничтожение только один раз
+        {
+            ToDestroy();
+        }
     }
+    private void ToDestroy()
+    {
+        PhotonNetwork.Destroy(gameObject);
+    }
+
+
 }

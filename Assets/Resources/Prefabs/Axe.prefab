@@ -43,8 +43,12 @@ GameObject:
   - component: {fileID: 1431028894375053279}
   - component: {fileID: 4855358829613569047}
   - component: {fileID: 9093215730637734642}
+<<<<<<< HEAD
   - component: {fileID: 3618256833492648527}
   - component: {fileID: 2001819066160723058}
+=======
+  - component: {fileID: 375725741104746609}
+>>>>>>> dev
   m_Layer: 0
   m_Name: Animation
   m_TagString: Untagged
@@ -153,7 +157,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   damage: 100
+<<<<<<< HEAD
 --- !u!114 &3618256833492648527
+=======
+--- !u!114 &375725741104746609
+>>>>>>> dev
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -162,6 +170,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1620141463269058934}
   m_Enabled: 1
   m_EditorHideFlags: 0
+<<<<<<< HEAD
   m_Script: {fileID: 11500000, guid: 9b8c4a61274f60b4ea5fb4299cfdbf14, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
@@ -187,6 +196,21 @@ MonoBehaviour:
   m_SynchronizeRotation: 1
   m_SynchronizeScale: 0
   m_UseLocal: 0
+=======
+  m_Script: {fileID: 11500000, guid: aa584fbee541324448dd18d8409c7a41, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ObservedComponentsFoldoutOpen: 1
+  Group: 0
+  prefixField: -1
+  Synchronization: 3
+  OwnershipTransfer: 0
+  observableSearch: 2
+  ObservedComponents: []
+  sceneViewId: 0
+  InstantiationId: 0
+  isRuntimeInstantiated: 0
+>>>>>>> dev
 --- !u!1 &8757739041975707825
 GameObject:
   m_ObjectHideFlags: 0
@@ -196,8 +220,11 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8757739041975707827}
+<<<<<<< HEAD
   - component: {fileID: 5599520411624866595}
   - component: {fileID: 167469328931455677}
+=======
+>>>>>>> dev
   m_Layer: 0
   m_Name: Axe
   m_TagString: Untagged
@@ -221,6 +248,7 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+<<<<<<< HEAD
 --- !u!114 &5599520411624866595
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -261,3 +289,5 @@ MonoBehaviour:
   m_SynchronizeRotation: 1
   m_SynchronizeScale: 0
   m_UseLocal: 0
+=======
+>>>>>>> dev
