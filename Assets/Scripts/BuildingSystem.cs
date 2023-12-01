@@ -9,8 +9,6 @@ public class BuildingSystem : MonoBehaviourPunCallbacks
     [SerializeField] private GameObject buildingPrefab_item;
     [SerializeField] private GameObject buildingPrefab_block;
 
-    private Dictionary<Vector3, GameObject> placedBlocks = new Dictionary<Vector3, GameObject>();
-
     private void Start()
     {
         // ѕровер€ем, что текущий объект BuildingSystem принадлежит локальному игроку
@@ -49,22 +47,8 @@ public class BuildingSystem : MonoBehaviourPunCallbacks
         {
             Vector3 newPosition = GetMousePositionInWorld();
             newPosition.z = 0f;
-
-            // ѕровер€ем наличие блока в этой позиции
-            if (!placedBlocks.ContainsKey(newPosition))
-            {
-                PhotonNetwork.Instantiate($"Items/{buildingPrefab_block.name}", newPosition, Quaternion.identity);
-                playerInventory.RemoveItem(buildingPrefab_item.GetComponent<PickableItem>().Item);
-
-                // ƒобавл€ем размещенный блок в словарь
-                GameObject newBlock = GameObject.Find($"Items/{buildingPrefab_block.name}(Clone)");
-                placedBlocks.Add(newPosition, newBlock);
-            }
-            else
-            {
-                Debug.Log("Ѕлок уже установлен в этой позиции.");
-                // ћожно добавить сообщение об ошибке или выполнить другие действи€ при попытке установить блок в зан€тую позицию
-            }
+            PhotonNetwork.Instantiate($"Items/{buildingPrefab_block.name}", newPosition, Quaternion.identity);
+            playerInventory.RemoveItem(buildingPrefab_item.GetComponent<PickableItem>().Item);
         }
     }
 
@@ -81,6 +65,5 @@ public class BuildingSystem : MonoBehaviourPunCallbacks
         // ¬озвращаем округленные координаты
         return new Vector3(roundedX, roundedY, 0f);
     }
-
 
 }
