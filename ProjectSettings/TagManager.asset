@@ -5,6 +5,13 @@ TagManager:
   serializedVersion: 2
   tags:
   - Enemy
+<<<<<<< Updated upstream
+=======
+  - PlayerArea
+  - InventoryManager
+  - Cells
+  - Tree
+>>>>>>> Stashed changes
   layers:
   - Default
   - TransparentFX

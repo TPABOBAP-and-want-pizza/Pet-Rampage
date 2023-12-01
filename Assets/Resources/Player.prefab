@@ -127,7 +127,55 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7e9339ce0a94e774b9e2fcceea2cc4d4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+<<<<<<< Updated upstream
   speed: 5
+=======
+  maxSpeed: 7
+  slowdown: 2
+  animator: {fileID: 4154358052979494661}
+  spriteObject: {fileID: 3534288211271525780}
+  selectedTransform: {fileID: 0}
+--- !u!114 &379437326683550144
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6146127752238705255}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a2d1a61d9b21ec44eab351eaf84ecd6c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  maxHealth: 100
+--- !u!114 &3314518110793328012
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6146127752238705255}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e776ab9b3f9d2ae46ab2c2a5a9be36ec, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  info: {fileID: 11400000, guid: aa8cec66bb9f51d4c9e967db2e8f1cb5, type: 2}
+  textName: {fileID: 746894626933338678}
+--- !u!114 &6317522979059158142
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6146127752238705255}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d458bfab4890de2449710a94e9e62761, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  buildingPrefab: {fileID: 8798070900654036050, guid: ad57ca7a6c7a90c41966ff4c60d8f3f5, type: 3}
+>>>>>>> Stashed changes
 --- !u!114 &9183571016217197201
 MonoBehaviour:
   m_ObjectHideFlags: 0
