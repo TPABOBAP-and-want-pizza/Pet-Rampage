@@ -43,7 +43,14 @@ public class Inventory
 
     public string CheckSelectedItem(int selected)
     {
-        return slots[selected]?.Item.name;
+        if (selected >= 0 && selected < slots.Length)
+        {
+            if (slots[selected] != null && slots[selected].Item != null)
+            {
+                return slots[selected].Item.name;
+            }
+        }
+        return null; // Возвращаем null, если выбранная ячейка пуста или недействительна
     }
 
     // Проверка наличия предмета в инвентаре
@@ -81,4 +88,5 @@ public class Inventory
         }
         return false;
     }
+
 }

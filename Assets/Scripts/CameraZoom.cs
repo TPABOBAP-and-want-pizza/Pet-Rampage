@@ -2,9 +2,9 @@ using UnityEngine;
 
 public class CameraZoom : MonoBehaviour
 {
-    public float[] zoomLevels = new float[] { 8f, 10f, 12f }; 
-    public int currentZoomLevel = 0; 
-    public float zoomSpeed = 0.1f; 
+    public float[] zoomLevels = new float[] { 8f, 10f, 12f };
+    public int currentZoomLevel = 0;
+    public float zoomSpeed = 0.1f;
 
     private Camera cameraComponent;
 
@@ -15,35 +15,31 @@ public class CameraZoom : MonoBehaviour
 
     void Update()
     {
-        float scroll = Input.GetAxis("Mouse ScrollWheel");
-
-        if (scroll != 0.0f)
+        if (Input.GetKeyDown(KeyCode.KeypadPlus) || Input.GetKeyDown(KeyCode.Equals))
         {
-            if (scroll < 0)
-            {
-                IncreaseZoom();
-            }
-            else if (scroll > 0)
-            {
-                DecreaseZoom();
-            }
+            IncreaseZoom();
+        }
+        else if (Input.GetKeyDown(KeyCode.KeypadMinus))
+        {
+            DecreaseZoom();
         }
     }
 
     void IncreaseZoom()
     {
-        if (currentZoomLevel < zoomLevels.Length - 1)
+
+        if (currentZoomLevel > 0)
         {
-            currentZoomLevel++;
+            currentZoomLevel--;
             SetZoomLevel(currentZoomLevel);
         }
     }
 
     void DecreaseZoom()
     {
-        if (currentZoomLevel > 0)
+        if (currentZoomLevel < zoomLevels.Length - 1)
         {
-            currentZoomLevel--;
+            currentZoomLevel++;
             SetZoomLevel(currentZoomLevel);
         }
     }

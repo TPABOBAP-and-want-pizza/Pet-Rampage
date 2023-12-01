@@ -19,7 +19,14 @@ public class ItemDisplay : MonoBehaviour
     private void ShowInfo(Sprite sprite, string str, bool showText)
     {
         image.sprite = sprite;
-        if(showText)
+        if (showText)
             text.text = str;
     }
+
+    // Установка масштаба элемента
+    public void SetScale(Vector3 scale)
+    {
+        transform.localScale = scale;
+    }
 }
+

@@ -11,6 +11,7 @@ public class Player : MonoBehaviourPun
     private InventoryDisplay display;
     private GameObject selectedObject;
     private PhotonView view;
+    private GameObject[] inventorySlots;
 
     public Text textName;
 
@@ -42,6 +43,7 @@ public class Player : MonoBehaviourPun
 
             highlightedSlotIndex = (highlightedSlotIndex + inventory.Slots.Length) % inventory.Slots.Length;
             InstantiateItemInHand();
+            HighlightSelectedSlot();
         }
     }
     private void InstantiateItemInHand()
@@ -71,5 +73,18 @@ public class Player : MonoBehaviourPun
 
             Photon.Pun.PhotonNetwork.Destroy(item.gameObject);
         }
+    }
+
+
+    private void ClearAllSlotHighlights()
+    {
+        foreach (var slot in inventorySlots)
+        {
+            slot.GetComponent<Image>().color = Color.white; // —брасываем цвет всех €чеек инвентар€ на белый (или на ваш выбор)
+        }
+    }
+    private void HighlightSelectedSlot()
+    {
+        display.SetSelectedCell(highlightedSlotIndex);
     }
 }
