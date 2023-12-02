@@ -11,18 +11,21 @@ public class BuildingSystem : MonoBehaviourPunCallbacks
     [SerializeField] private GameObject buildingPrefab_block;
     [SerializeField] private int resursesCount = 4;
     [SerializeField] private float buildDistance = 4;
+    private Player playerScript;
 
     private void Start()
     {
         if (photonView.IsMine)
         {
             GameObject playerObj = GameObject.FindGameObjectWithTag("Player");
+            playerScript = playerObj.GetComponent<Player>();
 
             Player localPlayer = playerObj.GetComponent<Player>();
 
             if (localPlayer != null)
             {
                 playerInventory = localPlayer.inventory;
+                
             }
             else
             {
@@ -44,11 +47,20 @@ public class BuildingSystem : MonoBehaviourPunCallbacks
     {
         if (playerInventory.HasItem(buildingPrefab_item.GetComponent<PickableItem>().Item, resursesCount))
         {
-            Vector3 newPosition = GetMousePositionInWorld();
-            if(newPosition != Vector3.zero)
+
+            
+
+            int activeSlotIndex = playerScript.GetHighlightedSlotIndex();
+            string itemName = playerScript.inventory.CheckSelectedItem(activeSlotIndex);
+
+            if (itemName == "Wood") // �������� "tree" �� ���� ������, ������������ ������
+            {
+                Vector3 newPosition = GetMousePositionInWorld();
+                if(newPosition != Vector3.zero)
             {
                 PhotonNetwork.Instantiate($"Items/{buildingPrefab_block.name}", newPosition, Quaternion.identity);
                 playerInventory.RemoveItem(buildingPrefab_item.GetComponent<PickableItem>().Item, resursesCount);
+            }
             }
         }
     }

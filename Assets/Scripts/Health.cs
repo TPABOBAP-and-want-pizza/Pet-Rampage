@@ -11,8 +11,14 @@ public class Health : MonoBehaviourPun, IDamageTaker
     private Image healthBar;
     private bool isPlayer; // Переменная для проверки, является ли объект игроком
 
+    private SpriteRenderer[] spriteRenderers;
+    private Color originalColor = Color.white;
+
     private void Start()
     {
+        spriteRenderers = GetComponentsInChildren<SpriteRenderer>();
+        originalColor = spriteRenderers[0].color; // Предполагаем, что основной цвет спрайта находится в первом элементе массива
+
         currentHealth = maxHealth;
 
         isPlayer = GetComponent<PlayerMovement>() != null; // Проверяем, есть ли на объекте компонент PlayerMovement (это может быть компонент, который есть только у игрока)
@@ -39,12 +45,13 @@ public class Health : MonoBehaviourPun, IDamageTaker
         if (photonView.IsMine)
         {
             currentHealth -= damage;
-            if(gameObject.tag == "Player")
+            if (gameObject.tag == "Player")
                 Debug.Log($"currentPlayerHealth = {currentHealth}");
 
             if (isPlayer)
             {
                 UpdateHealthBar();
+                StartCoroutine(FlashDamageEffect()); // Запускаем корутину для мигания при получении урона
             }
 
             if (currentHealth <= 0)
@@ -62,6 +69,30 @@ public class Health : MonoBehaviourPun, IDamageTaker
         {
             float healthRatio = (float)currentHealth / maxHealth;
             healthBar.fillAmount = healthRatio;
+        }
+    }
+
+    private IEnumerator FlashDamageEffect()
+    {
+        foreach (var renderer in spriteRenderers)
+        {
+            renderer.color = Color.red; // Устанавливаем цвет красным
+
+            yield return new WaitForSeconds(0.2f); // Ждем 0.2 секунды
+
+            renderer.color = originalColor; // Возвращаем исходный цвет
+        }
+
+        photonView.RPC("RestoreOriginalColor", RpcTarget.Others); // Вызываем RPC для восстановления цвета у других игроков
+    }
+    [PunRPC]
+    private void RestoreOriginalColor()
+    {
+        Debug.Log("Restoring original color on other players...");
+
+        foreach (var renderer in spriteRenderers)
+        {
+            renderer.color = originalColor; // Возвращаем исходный цвет у других игроков
         }
     }
 }
