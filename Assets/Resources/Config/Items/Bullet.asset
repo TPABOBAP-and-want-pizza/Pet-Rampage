@@ -10,11 +10,11 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 799559e7d9caf60488b8b61b100d8167, type: 3}
-  m_Name: Apple
+  m_Name: Bullet
   m_EditorClassIdentifier: 
-  name: Apple
-  id: 3
-  sprite: {fileID: 21300000, guid: 8cbe81bd38e9dca44a4615384dfd0cee, type: 3}
+  name: Bullet
+  id: 4
+  sprite: {fileID: 21300000, guid: 54c094fa617099e4ebda252c6ef9fe5e, type: 3}
   stackable: 1
-  maxCount: 16
+  maxCount: 32
   placeable: 0

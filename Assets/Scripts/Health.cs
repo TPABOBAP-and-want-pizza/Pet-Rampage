@@ -52,7 +52,7 @@ public class Health : MonoBehaviourPun, IDamageTaker
             {
                 UpdateHealthBar();
             }
-            StartCoroutine(FlashDamageEffect());
+            StartCoroutine(FlashDamageEffect(damage>0));
 
             if (currentHealth <= 0)
             {
@@ -72,18 +72,18 @@ public class Health : MonoBehaviourPun, IDamageTaker
         }
     }
 
-    private IEnumerator FlashDamageEffect()
+    private IEnumerator FlashDamageEffect(bool red)
     {
         foreach (var renderer in spriteRenderers)
         {
-            renderer.color = Color.red; // Устанавливаем цвет красным
+            renderer.color = red ? Color.red : Color.green; 
 
-            yield return new WaitForSeconds(0.2f); // Ждем 0.2 секунды
+            yield return new WaitForSeconds(0.2f);
 
-            renderer.color = originalColor; // Возвращаем исходный цвет
+            renderer.color = originalColor; 
         }
 
-        photonView.RPC("RestoreOriginalColor", RpcTarget.Others); // Вызываем RPC для восстановления цвета у других игроков
+        photonView.RPC("RestoreOriginalColor", RpcTarget.Others);
     }
     [PunRPC]
     private void RestoreOriginalColor()
@@ -92,7 +92,7 @@ public class Health : MonoBehaviourPun, IDamageTaker
 
         foreach (var renderer in spriteRenderers)
         {
-            renderer.color = originalColor; // Возвращаем исходный цвет у других игроков
+            renderer.color = originalColor; 
         }
     }
 }

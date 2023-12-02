@@ -146,6 +146,14 @@ MonoBehaviour:
   - {fileID: 8798070900654036050, guid: ad57ca7a6c7a90c41966ff4c60d8f3f5, type: 3}
   - {fileID: 8798070900654036050, guid: ad57ca7a6c7a90c41966ff4c60d8f3f5, type: 3}
   - {fileID: 8798070900654036050, guid: ad57ca7a6c7a90c41966ff4c60d8f3f5, type: 3}
+  - {fileID: 8798070900654036050, guid: ad57ca7a6c7a90c41966ff4c60d8f3f5, type: 3}
+  - {fileID: 1070999940863372042, guid: bbd8642256857b34aab65eb89f5c8bbd, type: 3}
+  chances:
+  - 100
+  - 100
+  - 100
+  - 20
+  - 5
 --- !u!114 &3461613681434690707
 MonoBehaviour:
   m_ObjectHideFlags: 0
