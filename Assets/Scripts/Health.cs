@@ -51,6 +51,8 @@ public class Health : MonoBehaviourPun, IDamageTaker
             {
                 PhotonNetwork.Destroy(gameObject);
             }
+
+            if (currentHealth > maxHealth) currentHealth = maxHealth;
         }
     }
 

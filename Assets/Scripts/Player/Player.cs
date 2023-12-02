@@ -36,9 +36,6 @@ public class Player : MonoBehaviourPun
     }
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.E))
-            PhotonNetwork.Instantiate("Items/BananaGun", transform.position + Vector3.left, Quaternion.identity);
-
         float scrollInput = Input.GetAxis("Mouse ScrollWheel");
         if (scrollInput != 0f)
         {
@@ -83,6 +80,10 @@ public class Player : MonoBehaviourPun
 
             PhotonNetwork.Destroy(item.gameObject);
         }
+    }
+    public void RemoveSelectedItem()
+    {
+        inventory.RemoveItem(inventory.Slots[highlightedSlotIndex].Item);
     }
 
     private void ClearAllSlotHighlights()
