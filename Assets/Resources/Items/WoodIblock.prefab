@@ -16,7 +16,7 @@ GameObject:
   - component: {fileID: 1843729135458820756}
   - component: {fileID: -1325122427996534684}
   - component: {fileID: 8685989163045080095}
-  m_Layer: 13
+  m_Layer: 14
   m_Name: WoodIblock
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -162,7 +162,7 @@ Rigidbody2D:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8798070900654036050}
-  m_BodyType: 0
+  m_BodyType: 2
   m_Simulated: 1
   m_UseFullKinematicContacts: 0
   m_UseAutoMass: 0
