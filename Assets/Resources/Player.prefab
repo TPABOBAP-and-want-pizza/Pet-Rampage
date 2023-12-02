@@ -475,6 +475,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   buildingPrefab_item: {fileID: 8798070900654036050, guid: ad57ca7a6c7a90c41966ff4c60d8f3f5, type: 3}
   buildingPrefab_block: {fileID: 8798070900654036050, guid: d6dbc1d05d7e03749a94f1904e6105e3, type: 3}
+  resursesCount: 4
 --- !u!114 &9183571016217197201
 MonoBehaviour:
   m_ObjectHideFlags: 0
