@@ -41,7 +41,7 @@ public class Player : MonoBehaviourPun
         {
             Debug.Log($"scrollInput = {scrollInput}");
 
-            highlightedSlotIndex += (scrollInput > 0f) ? 1 : -1;
+            highlightedSlotIndex += (scrollInput > 0f) ? -1 : 1;
 
             highlightedSlotIndex = (highlightedSlotIndex + inventory.Slots.Length) % inventory.Slots.Length;
             InstantiateItemInHand();
