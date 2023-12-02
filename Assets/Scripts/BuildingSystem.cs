@@ -9,6 +9,7 @@ public class BuildingSystem : MonoBehaviourPunCallbacks
     [SerializeField] private GameObject buildingPrefab_item;
     [SerializeField] private GameObject buildingPrefab_block;
     [SerializeField] private int resursesCount = 4;
+    private Player playerScript;
 
     private void Start()
     {
@@ -17,6 +18,7 @@ public class BuildingSystem : MonoBehaviourPunCallbacks
         {
             // Находим текущего игрока
             GameObject playerObj = GameObject.FindGameObjectWithTag("Player");
+            playerScript = playerObj.GetComponent<Player>();
 
             // Получаем компонент Player на объекте игрока
             Player localPlayer = playerObj.GetComponent<Player>();
@@ -25,6 +27,7 @@ public class BuildingSystem : MonoBehaviourPunCallbacks
             if (localPlayer != null)
             {
                 playerInventory = localPlayer.inventory;
+                
             }
             else
             {
@@ -46,10 +49,17 @@ public class BuildingSystem : MonoBehaviourPunCallbacks
         // Проверяем наличие блока в инвентаре игрока
         if (playerInventory.HasItem(buildingPrefab_item.GetComponent<PickableItem>().Item, resursesCount))
         {
-            Vector3 newPosition = GetMousePositionInWorld();
-            newPosition.z = 0f;
-            PhotonNetwork.Instantiate($"Items/{buildingPrefab_block.name}", newPosition, Quaternion.identity);
-            playerInventory.RemoveItem(buildingPrefab_item.GetComponent<PickableItem>().Item, resursesCount);
+            int activeSlotIndex = playerScript.GetHighlightedSlotIndex();
+            string itemName = playerScript.inventory.CheckSelectedItem(activeSlotIndex);
+
+            if (itemName == "Wood") // Замените "tree" на вашу строку, обозначающую дерево
+            {
+                Vector3 newPosition = GetMousePositionInWorld();
+                newPosition.z = 0f;
+                PhotonNetwork.Instantiate($"Items/{buildingPrefab_block.name}", newPosition, Quaternion.identity);
+                playerInventory.RemoveItem(buildingPrefab_item.GetComponent<PickableItem>().Item, resursesCount);
+            }
+
         }
     }
 

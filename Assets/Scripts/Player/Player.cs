@@ -53,8 +53,8 @@ public class Player : MonoBehaviourPun
         if (photonView.IsMine)
         {
             if (selectedObject != null)
-            
-            PhotonNetwork.Destroy(selectedObject);
+
+                PhotonNetwork.Destroy(selectedObject);
 
             string name = inventory.CheckSelectedItem(highlightedSlotIndex);
             Debug.Log($"name = {name}");
@@ -101,6 +101,11 @@ public class Player : MonoBehaviourPun
     private void HighlightSelectedSlot()
     {
         display.SetSelectedCell(highlightedSlotIndex);
+    }
+
+    public int GetHighlightedSlotIndex()
+    {
+        return highlightedSlotIndex;
     }
 
 }
