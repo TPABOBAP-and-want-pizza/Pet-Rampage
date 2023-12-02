@@ -56,7 +56,8 @@ public class Player : MonoBehaviourPun
         if (photonView.IsMine)
         {
             if (selectedObject != null)
-                Destroy(selectedObject);
+            
+            PhotonNetwork.Destroy(selectedObject);
 
             string name = inventory.CheckSelectedItem(highlightedSlotIndex);
             Debug.Log($"name = {name}");
@@ -64,15 +65,19 @@ public class Player : MonoBehaviourPun
             if (name != null)
             {
                 object[] instantiationData = { photonView.ViewID };
-                selectedObject = PhotonNetwork.Instantiate("Prefabs/" + name, transform.position, Quaternion.identity, 0, instantiationData);
-                selectedObject.transform.SetParent(transform.GetComponent<PhotonView>().transform);
 
+                // Создаем объект на позиции игрока и прикрепляем к его родительскому объекту (Player)
+                selectedObject = PhotonNetwork.Instantiate("Prefabs/" + name, transform.position, Quaternion.identity, 0, instantiationData);
+                selectedObject.transform.SetParent(transform);
+
+                // Устанавливаем выбранный объект для движения и выделения
                 transform.GetComponent<PlayerMovement>().SetSelectedTransform(selectedObject.transform);
                 Debug.Log("parent = " + selectedObject.transform.parent);
                 HighlightSelectedSlot();
             }
         }
     }
+
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.gameObject.layer == 13)//13 = pickableItem
