@@ -44,7 +44,7 @@ public class Zombie : MonoBehaviourPun, ISloweable, IPursue
         if (canAttack)
         {
             GameObject temp = collision.gameObject;
-            if (temp.GetComponent<IDamageTaker>() != null && temp.tag == "Player")
+            if (temp.GetComponent<IDamageTaker>() != null && (temp.tag == "Player" || temp.layer == 14)) //14 = block
             {
                 Debug.Log("Attack");
                 Invoke("NormaliseSpeed", 1f);

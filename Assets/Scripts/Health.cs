@@ -51,8 +51,8 @@ public class Health : MonoBehaviourPun, IDamageTaker
             if (isPlayer)
             {
                 UpdateHealthBar();
-                StartCoroutine(FlashDamageEffect()); // «апускаем корутину дл€ мигани€ при получении урона
             }
+            StartCoroutine(FlashDamageEffect());
 
             if (currentHealth <= 0)
             {
