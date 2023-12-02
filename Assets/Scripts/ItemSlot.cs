@@ -23,11 +23,11 @@ public class ItemSlot
         InfoUpdated?.Invoke(Item, Count);
     }
 
-    public void RemoveOneItem()
+    public void RemoveOneItem(int count)
     {
         if (Count > 0)
         {
-            Count--; // Уменьшаем количество предметов в слоте на один
+            Count -= count; // Уменьшаем количество предметов в слоте на один
             InfoUpdated?.Invoke(Item, Count);
             if (Count == 0)
             {

@@ -65,13 +65,24 @@ public class Inventory
         }
         return false;
     }
-    public void RemoveItem(ItemInfo info)
+    public bool HasItem(ItemInfo info, int count)
+    {
+        foreach (ItemSlot slot in slots)
+        {
+            if (slot.Item == info && slot.Count >= count)
+            {
+                return true;
+            }
+        }
+        return false;
+    }
+    public void RemoveItem(ItemInfo info, int count)
     {
         foreach (ItemSlot slot in slots)
         {
             if (slot.Item == info)
             {
-                slot.RemoveOneItem();
+                slot.RemoveOneItem(count);
                 break;
             }
         }

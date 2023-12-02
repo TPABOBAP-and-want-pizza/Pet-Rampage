@@ -7,6 +7,7 @@ public class Apple : MonoBehaviourPun
 {
     [SerializeField] private int healing = 10;
     [SerializeField] private float requiredHoldTime = 1f;
+    [SerializeField] private int countToRemove = 1;
     private bool holding = false;
     private float clickTime = 0f;
 
@@ -44,7 +45,7 @@ public class Apple : MonoBehaviourPun
                 photonView.RPC("TakeDamage", RpcTarget.AllBuffered, -healing);
             }
         }
-        transform?.parent?.GetComponent<Player>().RemoveSelectedItem();
+        transform?.parent?.GetComponent<Player>().RemoveSelectedItem(countToRemove);
         PhotonView.Destroy(gameObject);
     }
 }

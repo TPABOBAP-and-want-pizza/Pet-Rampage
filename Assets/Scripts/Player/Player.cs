@@ -86,9 +86,9 @@ public class Player : MonoBehaviourPun
             PhotonNetwork.Destroy(item.gameObject);
         }
     }
-    public void RemoveSelectedItem()
+    public void RemoveSelectedItem(int count)
     {
-        inventory.RemoveItem(inventory.Slots[highlightedSlotIndex].Item);
+        inventory.RemoveItem(inventory.Slots[highlightedSlotIndex].Item, count);
     }
 
     private void ClearAllSlotHighlights()

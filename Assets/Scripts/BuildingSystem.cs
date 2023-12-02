@@ -8,6 +8,7 @@ public class BuildingSystem : MonoBehaviourPunCallbacks
     private Inventory playerInventory; // Ссылка на инвентарь игрока
     [SerializeField] private GameObject buildingPrefab_item;
     [SerializeField] private GameObject buildingPrefab_block;
+    [SerializeField] private int resursesCount = 4;
 
     private void Start()
     {
@@ -43,12 +44,12 @@ public class BuildingSystem : MonoBehaviourPunCallbacks
     private void BuildBlock()
     {
         // Проверяем наличие блока в инвентаре игрока
-        if (playerInventory.HasItem(buildingPrefab_item.GetComponent<PickableItem>().Item))
+        if (playerInventory.HasItem(buildingPrefab_item.GetComponent<PickableItem>().Item, resursesCount))
         {
             Vector3 newPosition = GetMousePositionInWorld();
             newPosition.z = 0f;
             PhotonNetwork.Instantiate($"Items/{buildingPrefab_block.name}", newPosition, Quaternion.identity);
-            playerInventory.RemoveItem(buildingPrefab_item.GetComponent<PickableItem>().Item);
+            playerInventory.RemoveItem(buildingPrefab_item.GetComponent<PickableItem>().Item, resursesCount);
         }
     }
 
