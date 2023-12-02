@@ -1,11 +1,13 @@
-using System.Collections;
+п»їusing System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Photon.Pun;
 using UnityEngine.UI;
 
+
 public class Player : MonoBehaviourPun
 {
+    [SerializeField] private ItemInfo info;
     public Inventory inventory = new Inventory();
     private int highlightedSlotIndex = 0;
     private InventoryDisplay display;
@@ -17,7 +19,7 @@ public class Player : MonoBehaviourPun
 
     void Start()
     {
-        view = GetComponent<PhotonView>(); // Присвоение значения view
+        view = GetComponent<PhotonView>(); // пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ view
         if (view != null && view.Owner != null)
         {
             textName.text = view.Owner.NickName;
@@ -27,6 +29,9 @@ public class Player : MonoBehaviourPun
         {
             display = FindObjectOfType<InventoryDisplay>();
             display.AssignInventory(inventory);
+
+            inventory.AddItem(info, 1);
+            InstantiateItemInHand();
         }
     }
     private void Update()
@@ -58,8 +63,13 @@ public class Player : MonoBehaviourPun
 
             if (name != null)
             {
-                selectedObject = Instantiate(Resources.Load("Prefabs/" + name) as GameObject, transform.position, Quaternion.identity, transform);
-                transform.GetComponent<PlayerMovement>().SetSelectedTransform(selectedObject?.transform);
+                object[] instantiationData = { photonView.ViewID };
+                selectedObject = PhotonNetwork.Instantiate("Prefabs/" + name, transform.position, Quaternion.identity, 0, instantiationData);
+                selectedObject.transform.SetParent(transform.GetComponent<PhotonView>().transform);
+
+                transform.GetComponent<PlayerMovement>().SetSelectedTransform(selectedObject.transform);
+                Debug.Log("parent = " + selectedObject.transform.parent);
+                HighlightSelectedSlot();
             }
         }
     }
@@ -71,20 +81,20 @@ public class Player : MonoBehaviourPun
             inventory.AddItem(item.Item, item.Count);
             InstantiateItemInHand();
 
-            Photon.Pun.PhotonNetwork.Destroy(item.gameObject);
+            PhotonNetwork.Destroy(item.gameObject);
         }
     }
-
 
     private void ClearAllSlotHighlights()
     {
         foreach (var slot in inventorySlots)
         {
-            slot.GetComponent<Image>().color = Color.white; // Сбрасываем цвет всех ячеек инвентаря на белый (или на ваш выбор)
+            slot.GetComponent<Image>().color = Color.white; // пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅ (пїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ)
         }
     }
     private void HighlightSelectedSlot()
     {
         display.SetSelectedCell(highlightedSlotIndex);
     }
+
 }
