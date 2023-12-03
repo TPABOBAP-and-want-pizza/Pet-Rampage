@@ -9,6 +9,7 @@ TagManager:
   - InventoryManager
   - Cells
   - Tree
+  - GlobalLight
   layers:
   - Default
   - TransparentFX
