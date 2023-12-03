@@ -39,7 +39,7 @@ public class GlobalTimer : MonoBehaviourPunCallbacks, IPunObservable
                 }
 
 
-
+                
                 UpdateTimerUI();
                 photonView.RPC("SyncTimerAndLightIntensity", RpcTarget.Others, timeOfDay, globalLight.intensity, isDayTime, daysPassed);
 
@@ -92,7 +92,8 @@ public class GlobalTimer : MonoBehaviourPunCallbacks, IPunObservable
         int seconds = Mathf.FloorToInt(timeOfDay - minutes * 60);
         string formatTime = string.Format("{0} {1:0}:{2:00}", timeOfDayText, minutes, seconds);
         timerText.text = formatTime;
-        
+        GameManager.Day = daysPassed;
+
     }
 
     [PunRPC]
@@ -105,6 +106,7 @@ public class GlobalTimer : MonoBehaviourPunCallbacks, IPunObservable
 
         UpdateTimerUI();
         UpdateDayCounter();
+
     }
 
     public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
