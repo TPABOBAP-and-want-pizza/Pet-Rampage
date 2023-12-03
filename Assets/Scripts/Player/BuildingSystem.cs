@@ -41,6 +41,10 @@ public class BuildingSystem : MonoBehaviourPunCallbacks
             Debug.Log("Mouse(1)");
             BuildBlock();
         }
+        if (Input.GetKeyDown(KeyCode.Q))
+        {
+            DropItem();
+        }
     }
 
     private void BuildBlock()
@@ -48,24 +52,35 @@ public class BuildingSystem : MonoBehaviourPunCallbacks
         if (playerInventory.HasItem(buildingPrefab_item.GetComponent<PickableItem>().Item, resursesCount))
         {
 
-            
-
             int activeSlotIndex = playerScript.GetHighlightedSlotIndex();
-            string itemName = playerScript.inventory.CheckSelectedItem(activeSlotIndex);
+            string itemName = playerScript.inventory.GetInfoSelectedItem(activeSlotIndex).name;
 
             if (itemName == "Wood") // �������� "tree" �� ���� ������, ������������ ������
             {
-                Vector3 newPosition = GetMousePositionInWorld();
-                if(newPosition != Vector3.zero)
-            {
-                PhotonNetwork.Instantiate($"Items/{buildingPrefab_block.name}", newPosition, Quaternion.identity);
-                playerInventory.RemoveItem(buildingPrefab_item.GetComponent<PickableItem>().Item, resursesCount);
-            }
+                Vector3 newPosition = GetMousePositionInWorld(false);
+                if (newPosition != Vector3.zero)
+                {
+                    PhotonNetwork.Instantiate($"Items/{buildingPrefab_block.name}", newPosition, Quaternion.identity);
+                    playerInventory.RemoveItem(buildingPrefab_item.GetComponent<PickableItem>().Item, resursesCount);
+                }
             }
         }
     }
 
-    private Vector3 GetMousePositionInWorld()
+    private void DropItem()
+    {
+        int activeSlotIndex = playerScript.GetHighlightedSlotIndex();
+        ItemInfo itemInfo = playerScript.inventory.GetInfoSelectedItem(activeSlotIndex);
+        Vector3 newPosition = GetMousePositionInWorld(true);
+        if (newPosition != Vector3.zero)
+        {
+            PhotonNetwork.Instantiate($"Items/{itemInfo.name}Item", newPosition, Quaternion.identity);
+            playerInventory.RemoveItem(itemInfo, 1);
+            playerScript.InstantiateItemInHand();
+        }
+    }
+
+    private Vector3 GetMousePositionInWorld(bool ignore)
     {
         Vector3 worldPos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
         Vector2 v2p = new Vector2(transform.position.x, transform.position.y);
@@ -75,10 +90,10 @@ public class BuildingSystem : MonoBehaviourPunCallbacks
             return Vector3.zero;
 
         Vector3 raycastDirection = -Vector3.forward;
+        RaycastHit2D hit = Physics2D.Raycast(worldPos, raycastDirection, Mathf.Infinity, ~ignoreLayer);  //8 = trigger area
 
-        RaycastHit2D hit = Physics2D.Raycast(worldPos, raycastDirection, Mathf.Infinity, ~ignoreLayer); //8 = trigger area
         Debug.Log($"hit.collider = {hit.collider}, {Time.time}");
-        if (hit.collider == null)
+        if (hit.collider == null || ignore)
         {
             float roundedX = Mathf.Round(worldPos.x / 1) * 1;
             float roundedY = Mathf.Round(worldPos.y / 1) * 1;

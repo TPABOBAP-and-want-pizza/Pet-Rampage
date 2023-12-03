@@ -41,13 +41,13 @@ public class Inventory
         }
     }
 
-    public string CheckSelectedItem(int selected)
+    public ItemInfo GetInfoSelectedItem(int selected)
     {
         if (selected >= 0 && selected < slots.Length)
         {
             if (slots[selected] != null && slots[selected].Item != null)
             {
-                return slots[selected].Item.name;
+                return slots[selected].Item;
             }
         }
         return null; // Возвращаем null, если выбранная ячейка пуста или недействительна
