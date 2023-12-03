@@ -16,6 +16,8 @@ GameObject:
   - component: {fileID: 3461613681434690707}
   - component: {fileID: 3461613681434690717}
   - component: {fileID: 2325476181529710659}
+  - component: {fileID: 4337298124315202958}
+  - component: {fileID: 723023694796358635}
   m_Layer: 0
   m_Name: Tree
   m_TagString: Tree
@@ -198,6 +200,45 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 95a6aa62e9d24a34fb3059a8b3ea3047, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &4337298124315202958
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3461613681434690714}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7db70e0ea77f5ac47a8f4565a9406397, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_ShadowGroup: 0
+  m_ComponentVersion: 1
+  m_HasRenderer: 1
+  m_UseRendererSilhouette: 1
+  m_CastsShadows: 1
+  m_SelfShadows: 1
+  m_ApplyToSortingLayers: 00000000
+  m_ShapePath:
+  - {x: 0.02189231, y: 1.1107769, z: 0}
+  - {x: 0.0054268837, y: -2.5218544, z: 0}
+  - {x: -0.07671523, y: -2.5218525, z: 0}
+  - {x: -0.060249567, y: 1.1107807, z: 0}
+  m_ShapePathHash: 371805525
+  m_Mesh: {fileID: 0}
+  m_InstanceId: 87450
+--- !u!114 &723023694796358635
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3461613681434690714}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 65b303be13de7384dbe8f0d66072b95e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &8390304632306400619
