@@ -106,7 +106,7 @@ public class Zombie : MonoBehaviourPun, ISloweable, IPursue
             {
                 canAttack = false;
                 if(!GameManager.IsNight)
-                    currentSpeed = 0f;
+                    currentSpeed = maxSpeed;
 
                 collision.gameObject.GetComponent<IDamageTaker>().TakeDamage(damage);
                 StartCoroutine(AttackCooldown());
