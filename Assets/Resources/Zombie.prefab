@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 101376236034395727}
   - component: {fileID: 101376236034395726}
   - component: {fileID: 101376236034395721}
+  - component: {fileID: 6901040272061897462}
   - component: {fileID: 101376236034395720}
   - component: {fileID: -508789516028222883}
   - component: {fileID: -9221624293713844778}
@@ -128,6 +129,28 @@ CircleCollider2D:
   m_Offset: {x: 0, y: 0}
   serializedVersion: 2
   m_Radius: 0.5
+--- !u!114 &6901040272061897462
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 101376236034395723}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ae69baa407357bc419485823db5fefe7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  items:
+  - {fileID: 1070999940863372042, guid: bbd8642256857b34aab65eb89f5c8bbd, type: 3}
+  - {fileID: 1070999940863372042, guid: f0db8a6d4d54a854da4eb94fa83cb830, type: 3}
+  - {fileID: 1070999940863372042, guid: f0db8a6d4d54a854da4eb94fa83cb830, type: 3}
+  - {fileID: 564364153540092635, guid: 71682ada2827efd499994735c50cef94, type: 3}
+  chances:
+  - 40
+  - 20
+  - 5
+  - 3
 --- !u!114 &101376236034395720
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -144,7 +167,9 @@ MonoBehaviour:
   damage: 10
   attackDelay: 1
   maxSpeed: 2
+  nightSpeed: 4
   slowdown: 2
+  vecVertorlot: {fileID: 2838519210866579089, guid: 670b7383ba7a1c04e93dd5ac43077ff0, type: 3}
 --- !u!114 &-508789516028222883
 MonoBehaviour:
   m_ObjectHideFlags: 0

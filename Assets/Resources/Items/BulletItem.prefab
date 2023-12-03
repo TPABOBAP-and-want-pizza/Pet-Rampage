@@ -16,7 +16,7 @@ GameObject:
   - component: {fileID: 5161276289491602396}
   - component: {fileID: 4110267003651003494}
   m_Layer: 13
-  m_Name: AppleItem
+  m_Name: BulletItem
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -57,7 +57,7 @@ SpriteRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: a97c105638bdf8b4a8650670310a4cd3, type: 2}
+  - {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -78,7 +78,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: 8cbe81bd38e9dca44a4615384dfd0cee, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 54c094fa617099e4ebda252c6ef9fe5e, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -164,8 +164,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a5c46e559ae6db846ba3c911eeae883f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  item: {fileID: 11400000, guid: d9ea9493ed78e1d4286d1eeb9e4f9ceb, type: 2}
-  count: 1
+  item: {fileID: 11400000, guid: d1975ef39b6c43744954390f8399f9b1, type: 2}
+  count: 6
 --- !u!114 &4110267003651003494
 MonoBehaviour:
   m_ObjectHideFlags: 0

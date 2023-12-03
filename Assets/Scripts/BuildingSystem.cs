@@ -5,25 +5,23 @@ using UnityEngine;
 
 public class BuildingSystem : MonoBehaviourPunCallbacks
 {
-    private Inventory playerInventory; // Ссылка на инвентарь игрока
+    private Inventory playerInventory;
+    [SerializeField] private LayerMask ignoreLayer;
     [SerializeField] private GameObject buildingPrefab_item;
     [SerializeField] private GameObject buildingPrefab_block;
     [SerializeField] private int resursesCount = 4;
+    [SerializeField] private float buildDistance = 4;
     private Player playerScript;
 
     private void Start()
     {
-        // Проверяем, что текущий объект BuildingSystem принадлежит локальному игроку
         if (photonView.IsMine)
         {
-            // Находим текущего игрока
             GameObject playerObj = GameObject.FindGameObjectWithTag("Player");
             playerScript = playerObj.GetComponent<Player>();
 
-            // Получаем компонент Player на объекте игрока
             Player localPlayer = playerObj.GetComponent<Player>();
 
-            // Если игрок найден, получаем его инвентарь
             if (localPlayer != null)
             {
                 playerInventory = localPlayer.inventory;
@@ -40,41 +38,54 @@ public class BuildingSystem : MonoBehaviourPunCallbacks
     {
         if (Input.GetMouseButtonDown(1))
         {
+            Debug.Log("Mouse(1)");
             BuildBlock();
         }
     }
 
     private void BuildBlock()
     {
-        // Проверяем наличие блока в инвентаре игрока
         if (playerInventory.HasItem(buildingPrefab_item.GetComponent<PickableItem>().Item, resursesCount))
         {
+
+            
+
             int activeSlotIndex = playerScript.GetHighlightedSlotIndex();
             string itemName = playerScript.inventory.CheckSelectedItem(activeSlotIndex);
 
-            if (itemName == "Wood") // Замените "tree" на вашу строку, обозначающую дерево
+            if (itemName == "Wood") // пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ "tree" пїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ, пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ
             {
                 Vector3 newPosition = GetMousePositionInWorld();
-                newPosition.z = 0f;
+                if(newPosition != Vector3.zero)
+            {
                 PhotonNetwork.Instantiate($"Items/{buildingPrefab_block.name}", newPosition, Quaternion.identity);
                 playerInventory.RemoveItem(buildingPrefab_item.GetComponent<PickableItem>().Item, resursesCount);
             }
-
+            }
         }
     }
 
     private Vector3 GetMousePositionInWorld()
     {
-        Vector3 mousePos = Input.mousePosition;
-        mousePos.z = Camera.main.transform.position.z;
-        Vector3 worldPos = Camera.main.ScreenToWorldPoint(mousePos);
+        Vector3 worldPos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+        Vector2 v2p = new Vector2(transform.position.x, transform.position.y);
+        Vector2 v2m = new Vector2(worldPos.x, worldPos.y);
 
-        // Округляем координаты до ближайших значений, кратных 10
-        float roundedX = Mathf.Round(worldPos.x / 1) * 1;
-        float roundedY = Mathf.Round(worldPos.y / 1) * 1;
+        if (Vector2.Distance(v2p, v2m) > buildDistance)
+            return Vector3.zero;
 
-        // Возвращаем округленные координаты
-        return new Vector3(roundedX, roundedY, 0f);
+        Vector3 raycastDirection = -Vector3.forward;
+
+        RaycastHit2D hit = Physics2D.Raycast(worldPos, raycastDirection, Mathf.Infinity, ~ignoreLayer); //8 = trigger area
+        Debug.Log($"hit.collider = {hit.collider}, {Time.time}");
+        if (hit.collider == null)
+        {
+            float roundedX = Mathf.Round(worldPos.x / 1) * 1;
+            float roundedY = Mathf.Round(worldPos.y / 1) * 1;
+
+            return new Vector3(roundedX, roundedY, 0f);
+        }
+        return Vector3.zero;
     }
 
 }

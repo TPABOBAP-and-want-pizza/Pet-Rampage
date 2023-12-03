@@ -47,22 +47,28 @@ public class Blow : MonoBehaviourPun
         {
             Transform target = hit.transform;
             PhotonView targetPhotonView = target.GetComponent<PhotonView>();
+            if (targetPhotonView == null)
+            {
+                Debug.LogError("targetPhotonView = null");
+                continue;
+            }
+
+            int targetPlayerPhotonID = targetPhotonView.ViewID;
+            int playerID = transform.parent.parent.GetComponent<PhotonView>().ViewID;
+            Debug.Log($"playerID = {playerID}");
+
+            if (targetPlayerPhotonID == playerID)
+               continue;
 
             if (target.GetComponent<ISloweable>() != null)
             {
-                if (targetPhotonView != null)
-                {
-                    targetPhotonView.RPC("SlowDown", RpcTarget.AllBuffered);
-                    Debug.Log("Slowing down target.");
-                }
+                targetPhotonView.RPC("SlowDown", RpcTarget.AllBuffered);
+                Debug.Log("Slowing down target.");
             }
             if (target.GetComponent<IDamageTaker>() != null)
             {
-                if (targetPhotonView != null)
-                {
-                    targetPhotonView.RPC("TakeDamage", RpcTarget.AllBuffered, damage);
-                    Debug.Log("Dealing damage to target.");
-                }
+                targetPhotonView.RPC("TakeDamage", RpcTarget.AllBuffered, damage);
+                Debug.Log("Dealing damage to target.");
             }
         }
     }

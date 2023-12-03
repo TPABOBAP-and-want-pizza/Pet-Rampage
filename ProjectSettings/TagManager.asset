@@ -8,6 +8,7 @@ TagManager:
   - PlayerArea
   - InventoryManager
   - Cells
+  - Tree
   layers:
   - Default
   - TransparentFX
@@ -23,7 +24,7 @@ TagManager:
   - SmallColler
   - Being
   - PickableItem
-  - 
+  - Block
   - TreesSortingLayer
   - 
   - 
