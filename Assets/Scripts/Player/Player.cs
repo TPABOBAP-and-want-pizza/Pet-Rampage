@@ -48,7 +48,7 @@ public class Player : MonoBehaviourPun
             HighlightSelectedSlot();
         }
     }
-    private void InstantiateItemInHand()
+    public void InstantiateItemInHand()
     {
         if (photonView.IsMine)
         {
@@ -56,7 +56,7 @@ public class Player : MonoBehaviourPun
 
                 PhotonNetwork.Destroy(selectedObject);
 
-            string name = inventory.CheckSelectedItem(highlightedSlotIndex);
+            string name = inventory.GetInfoSelectedItem(highlightedSlotIndex).name;
             Debug.Log($"name = {name}");
 
             if (name != null)
