@@ -10,6 +10,9 @@ public class SpawnPlayers : MonoBehaviourPunCallbacks
     [SerializeField] GameObject zombiePrefab;
     [SerializeField] GameObject helipadPrefab;
 
+    private List<GameObject> zombies = new List<GameObject>();
+    private List<GameObject> trees = new List<GameObject>();
+
     public float minX;
     public float maxX;
     public float minY;
@@ -19,7 +22,6 @@ public class SpawnPlayers : MonoBehaviourPunCallbacks
     public int treesInCluster;
     public int treesRandeInCluster;
     public int randomTreesInMap;
-
 
     private bool hasSpawned = false;
 
@@ -44,7 +46,7 @@ public class SpawnPlayers : MonoBehaviourPunCallbacks
     private void SpawnTreesAndZombies()
     {
         SpawnTreesInClusters();
-        SpawnRandomTreesOnMap();
+        SpawnRandomTreesOnMap(randomTreesInMap);
 
         for (int i = 0; i < 30; i++)
         {
@@ -52,13 +54,12 @@ public class SpawnPlayers : MonoBehaviourPunCallbacks
 
             GameObject zombie = PhotonNetwork.InstantiateRoomObject(zombiePrefab.name, randomPosition, Quaternion.identity);
             DontDestroyOnLoad(zombie);
+            zombies.Add(zombie);
         }
     }
 
     private void SpawnTreesInClusters()
     {
-
-
         for (int i = 0; i < treeClusterCount; i++)
         {
             Vector2 clusterPosition = new Vector2(Random.Range(minX + treesRandeInCluster, maxX - treesRandeInCluster), Random.Range(minY + treesRandeInCluster, maxY - treesRandeInCluster));
@@ -71,17 +72,19 @@ public class SpawnPlayers : MonoBehaviourPunCallbacks
 
                 GameObject tree = PhotonNetwork.InstantiateRoomObject(treePrefab.name, treePosition, Quaternion.identity);
                 DontDestroyOnLoad(tree);
+                trees.Add(tree);
             }
         }
     }
 
-    private void SpawnRandomTreesOnMap()
+    private void SpawnRandomTreesOnMap(int count)
     {
-        for (int i = 0; i < randomTreesInMap; i++)
+        for (int i = 0; i < count; i++)
         {
             Vector2 randomTreePosition = new Vector2(Random.Range(minX, maxX), Random.Range(minY, maxY));
             GameObject randomTree = PhotonNetwork.InstantiateRoomObject(treePrefab.name, randomTreePosition, Quaternion.identity);
             DontDestroyOnLoad(randomTree);
+            trees.Add(randomTree);
         }
     }
 }
