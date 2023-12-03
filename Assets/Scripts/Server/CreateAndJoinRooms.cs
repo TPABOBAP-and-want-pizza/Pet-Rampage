@@ -9,9 +9,15 @@ using UnityEngine.SceneManagement;
 public class CreateAndJoinRooms : MonoBehaviourPunCallbacks
 {
 
+    
     public InputField createInput;
     public InputField joinInput;
     public InputField inputName;
+
+    void Start()
+    {
+        PhotonNetwork.ConnectUsingSettings();
+    }
 
     public void CreateRoom()
     {
@@ -35,4 +41,17 @@ public class CreateAndJoinRooms : MonoBehaviourPunCallbacks
 
         PhotonNetwork.NickName = inputName.text;
     }
+
+    public void QuickMatch()
+    {
+        PhotonNetwork.JoinRandomRoom();
+    }
+    
+    public override void OnJoinRandomFailed(short returnCode, string message)
+    {
+        RoomOptions roomOptions = new RoomOptions();
+        roomOptions.MaxPlayers = 4;
+        PhotonNetwork.CreateRoom(null, roomOptions, null);
+    }
+
 }
