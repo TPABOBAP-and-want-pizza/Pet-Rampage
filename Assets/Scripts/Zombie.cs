@@ -19,7 +19,7 @@ public class Zombie : MonoBehaviourPun, ISloweable, IPursue
     public bool isInPursueZone { get; set; } = false;
     private bool night = false;
     private bool vertolot = false;
-    [SerializeField] Transform vecVertorlot;
+    [SerializeField] Vector3 vecVertorlot;
     [Header("Zombie Animation Settings")]
     public Animator zombieAnimator;
     [SerializeField] SpriteRenderer zombieSpriteRenderer;
@@ -90,7 +90,7 @@ public class Zombie : MonoBehaviourPun, ISloweable, IPursue
         Vector3 direction = pursuedTransform.position - transform.position;
         if (GameManager.IsNight && vertolot)
         {
-            direction = vecVertorlot.position - transform.position; 
+            direction = vecVertorlot - transform.position;
         }
         float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
         transform.rotation = Quaternion.AngleAxis(angle, Vector3.forward);

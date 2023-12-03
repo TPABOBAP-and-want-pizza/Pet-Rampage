@@ -170,7 +170,7 @@ MonoBehaviour:
   maxSpeed: 2
   nightSpeed: 4
   slowdown: 2
-  vecVertorlot: {fileID: 2838519210866579089, guid: 670b7383ba7a1c04e93dd5ac43077ff0, type: 3}
+  vecVertorlot: {x: 11.6, y: 38.6, z: 0}
   zombieAnimator: {fileID: 471300127037526114}
   zombieSpriteRenderer: {fileID: 794998247156529104}
 --- !u!114 &-508789516028222883
