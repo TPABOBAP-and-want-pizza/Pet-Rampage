@@ -66,19 +66,23 @@ public class Zombie : MonoBehaviourPun, ISloweable, IPursue
         {
             Following();
             zombieAnimator.SetBool("Is_walk", true); // Устанавливаем переменную для анимации ходьбы
-            zombieAnimator.SetBool("Is_attack", false); // Сбрасываем переменную для анимации атаки
 
-            float rotationZ = transform.eulerAngles.z;
-            zombieSpriteRenderer.flipY = (rotationZ >= -270 && rotationZ <= -90) || (rotationZ >= 90 && rotationZ <= 270);
+            if (canAttack)
+            {
+                zombieAnimator.SetBool("Is_attack", false); // Сбрасываем переменную для анимации атаки
+                float rotationZ = transform.eulerAngles.z;
+                zombieSpriteRenderer.flipY = (rotationZ >= -270 && rotationZ <= -90) || (rotationZ >= 90 && rotationZ <= 270);
+            }
         }
         else
         {
-
-
-
             // Нет цели для преследования, значит зомби стоит на месте
             zombieAnimator.SetBool("Is_walk", false); // Сбрасываем переменную для анимации ходьбы
-            zombieAnimator.SetBool("Is_attack", false); // Сбрасываем переменную для анимации атаки
+
+            if (canAttack)
+            {
+                zombieAnimator.SetBool("Is_attack", false); // Сбрасываем переменную для анимации атаки
+            }
         }
     }
 
@@ -101,19 +105,11 @@ public class Zombie : MonoBehaviourPun, ISloweable, IPursue
             GameObject temp = collision.gameObject;
             if (temp.GetComponent<IDamageTaker>() != null && (temp.tag == "Player" || temp.layer == 14)) //14 = block
             {
-                zombieAnimator.SetBool("Is_attack", true);
-                Debug.Log("Attack");
-                Invoke("NormaliseSpeed", 1f);
-                Invoke("SetCanAttackTrue", attackDelay);
                 canAttack = false;
-                if (!isNight)
-                    currentSpeed = 0f;
-
                 collision.gameObject.GetComponent<IDamageTaker>().TakeDamage(damage);
+                StartCoroutine(AttackCooldown());
             }
-            
         }
-
     }
     public void StartTimer()
     {
@@ -140,5 +136,12 @@ public class Zombie : MonoBehaviourPun, ISloweable, IPursue
     {
         canAttack = true;
 
+    }
+    private IEnumerator AttackCooldown()
+    {
+        zombieAnimator.SetBool("Is_attack", true);
+        yield return new WaitForSeconds(0.5f); // Таймер на 2 секунды
+        zombieAnimator.SetBool("Is_attack", false);
+        canAttack = true;
     }
 }
