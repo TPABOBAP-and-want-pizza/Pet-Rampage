@@ -363,7 +363,7 @@ MonoBehaviour:
   - {x: -0.005791664, y: 0.075920105, z: 0}
   m_ShapePathHash: 743020309
   m_Mesh: {fileID: 0}
-  m_InstanceId: 55592
+  m_InstanceId: 78754
 --- !u!114 &46383610355120758
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -391,6 +391,7 @@ GameObject:
   - component: {fileID: 379437326683550144}
   - component: {fileID: 3314518110793328012}
   - component: {fileID: 6317522979059158142}
+  - component: {fileID: 9056507501173998189}
   - component: {fileID: 9183571016217197201}
   - component: {fileID: 7846089559015353656}
   m_Layer: 0
@@ -528,6 +529,20 @@ MonoBehaviour:
   buildingPrefab_block: {fileID: 8798070900654036050, guid: d6dbc1d05d7e03749a94f1904e6105e3, type: 3}
   resursesCount: 4
   buildDistance: 4
+--- !u!114 &9056507501173998189
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6146127752238705255}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d40eae1f4edcefe4eaf8e03afdb74f04, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  cooldown: 10
+  timer: {fileID: 0}
 --- !u!114 &9183571016217197201
 MonoBehaviour:
   m_ObjectHideFlags: 0

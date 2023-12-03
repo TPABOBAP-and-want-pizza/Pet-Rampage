@@ -108,5 +108,4 @@ public class Player : MonoBehaviourPun
     {
         return highlightedSlotIndex;
     }
-
 }
