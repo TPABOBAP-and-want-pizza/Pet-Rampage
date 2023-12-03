@@ -7,15 +7,14 @@ public class PursuedArea : MonoBehaviour
     [SerializeField] private CircleCollider2D pursuedAreaCollider;
     [SerializeField] private float multiplier = 3f;
     private bool night = false;
-    public bool isNight { get; set; } = false;
     private void Update()
     {
-        if (isNight && !night)
+        if (GameManager.IsNight && !night)
         {
             night = true;
             pursuedAreaCollider.radius *= multiplier;
         }
-        else if (!isNight && night)
+        else if (!GameManager.IsNight && night)
         {
             night = false;
             pursuedAreaCollider.radius /= multiplier;

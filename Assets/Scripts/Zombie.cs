@@ -17,7 +17,6 @@ public class Zombie : MonoBehaviourPun, ISloweable, IPursue
     public Transform PursueTransform { get { return pursuedTransform; } set { pursuedTransform = value; } }
 
     public bool isInPursueZone { get; set; } = false;
-    public bool isNight { get; set; } = false;
     private bool night = false;
     private bool vertolot = false;
     [SerializeField] Transform vecVertorlot;
@@ -30,13 +29,13 @@ public class Zombie : MonoBehaviourPun, ISloweable, IPursue
 
     void Update()
     {
-        if(isNight && !night)
+        if(GameManager.IsNight && !night)
         {
             night = true;
             vertolot = Random.Range(1, 3) == 1;
             currentSpeed = nightSpeed;
         }
-        else if(!isNight && night)
+        else if(!GameManager.IsNight && night)
         {
             night = false;
             currentSpeed = maxSpeed;
@@ -51,7 +50,7 @@ public class Zombie : MonoBehaviourPun, ISloweable, IPursue
     private void Following()
     {
         Vector3 direction = pursuedTransform.position - transform.position;
-        if (isNight && vertolot)
+        if (GameManager.IsNight && vertolot)
         {
             direction = vecVertorlot.position - transform.position; 
         }
@@ -71,7 +70,7 @@ public class Zombie : MonoBehaviourPun, ISloweable, IPursue
                 Invoke("NormaliseSpeed", 1f);
                 Invoke("SetCanAttackTrue", attackDelay);
                 canAttack = false;
-                if(!isNight)
+                if(!GameManager.IsNight)
                     currentSpeed = 0f;
 
                 collision.gameObject.GetComponent<IDamageTaker>().TakeDamage(damage);
@@ -95,7 +94,7 @@ public class Zombie : MonoBehaviourPun, ISloweable, IPursue
     }
     private void NormaliseSpeed()
     {
-        if (!isNight)
+        if (!GameManager.IsNight)
             currentSpeed = maxSpeed;
         else currentSpeed = nightSpeed;
     }

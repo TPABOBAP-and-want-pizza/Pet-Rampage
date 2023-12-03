@@ -24,31 +24,56 @@ public class SpawnPlayers : MonoBehaviourPunCallbacks
     public int randomTreesInMap;
 
     private bool hasSpawned = false;
+    private bool night = false;
+    private int nightTreesCount = 30;
 
     private void Start()
     {
         if (PhotonNetwork.IsMasterClient && !hasSpawned)
         {
             PhotonNetwork.InstantiateRoomObject(zombiePrefab.name, Vector3.zero, Quaternion.identity);
-            SpawnTreesAndZombies();
+            SpawnTrees();
+            SpawnZombies(30);
             hasSpawned = true;
         }
 
         SpawnPlayer();
     }
+    private void Update()
+    {
+        if (GameManager.IsNight && !night)
+        {
+            hasSpawned = false;
+            night = true;
+        }
+        if (!GameManager.IsNight && night)
+        {
+            night = false;
+            hasSpawned = false;
+        }
 
+        if(!night && !hasSpawned)
+        {
+            SpawnRandomTreesOnMap(nightTreesCount);
+            hasSpawned = true;
+            Debug.Log("trees has spawned");
+        }
+        if(night && !hasSpawned)
+        {
+            SpawnZombies(30);
+            Debug.Log("zombies spawned");
+            hasSpawned = true;
+        }
+    }
     private void SpawnPlayer()
     {
         Vector2 randomPosition = new Vector2(Random.Range(5, 10), Random.Range(5, 10));
         PhotonNetwork.Instantiate(playerPrefab.name, randomPosition, Quaternion.identity);
     }
 
-    private void SpawnTreesAndZombies()
+    private void SpawnZombies(int count)
     {
-        SpawnTreesInClusters();
-        SpawnRandomTreesOnMap(randomTreesInMap);
-
-        for (int i = 0; i < 30; i++)
+        for (int i = 0; i < count; i++)
         {
             Vector2 randomPosition = new Vector2(Random.Range(minX, maxX), Random.Range(minY, maxY));
 
@@ -56,6 +81,11 @@ public class SpawnPlayers : MonoBehaviourPunCallbacks
             DontDestroyOnLoad(zombie);
             zombies.Add(zombie);
         }
+    }
+    private void SpawnTrees()
+    {
+        SpawnTreesInClusters();
+        SpawnRandomTreesOnMap(randomTreesInMap);
     }
 
     private void SpawnTreesInClusters()

@@ -19,10 +19,10 @@ public class Blow : MonoBehaviourPun
         if (photonView.IsMine)
         {
             {
-                if (Input.GetMouseButtonDown(0) && canBlow)
+                if (Input.GetMouseButton(0) && canBlow)
                 {
                     canBlow = false;
-                    Invoke("SetCanBlowTrue", 0.8f);
+                    Invoke("SetCanBlowTrue", 0.5f);
                     Vector2 mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
 
                     raycastDirection = mousePosition - (Vector2)transform.position;

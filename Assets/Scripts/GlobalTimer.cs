@@ -7,6 +7,7 @@ public class GlobalTimer : MonoBehaviourPunCallbacks, IPunObservable
 {
     [SerializeField]
     private Light2D globalLight;
+    [SerializeField] GameManager manager;
 
     public float maxDayIntensity = 1f;
     public float maxNightIntensity = 0f;
@@ -54,6 +55,7 @@ public class GlobalTimer : MonoBehaviourPunCallbacks, IPunObservable
             if (timeOfDay <= 0f)
             {
                 isDayTime = !isDayTime;
+                manager.SetNightState(!isDayTime);
                 timeOfDay = isDayTime ? dayDuration : nightDuration;
             }
 
