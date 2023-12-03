@@ -20,6 +20,7 @@ public class Zombie : MonoBehaviourPun, ISloweable, IPursue
     public bool isNight { get; set; } = false;
     private bool night = false;
     private bool vertolot = false;
+    [SerializeField] Transform vecVertorlot;
 
     void Start()
     {
@@ -52,7 +53,7 @@ public class Zombie : MonoBehaviourPun, ISloweable, IPursue
         Vector3 direction = pursuedTransform.position - transform.position;
         if (isNight && vertolot)
         {
-            direction = Vector3.zero - transform.position; 
+            direction = vecVertorlot.position - transform.position; 
         }
         float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
         transform.rotation = Quaternion.AngleAxis(angle, Vector3.forward);

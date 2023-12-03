@@ -8,6 +8,7 @@ public class SpawnPlayers : MonoBehaviourPunCallbacks
     public GameObject playerPrefab;
     [SerializeField] GameObject treePrefab;
     [SerializeField] GameObject zombiePrefab;
+    [SerializeField] GameObject helipadPrefab;
 
     public float minX;
     public float maxX;
@@ -26,6 +27,7 @@ public class SpawnPlayers : MonoBehaviourPunCallbacks
     {
         if (PhotonNetwork.IsMasterClient && !hasSpawned)
         {
+            PhotonNetwork.InstantiateRoomObject(zombiePrefab.name, Vector3.zero, Quaternion.identity);
             SpawnTreesAndZombies();
             hasSpawned = true;
         }
