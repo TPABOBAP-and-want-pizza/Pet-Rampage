@@ -19,10 +19,17 @@ public class GlobalTimer : MonoBehaviourPunCallbacks, IPunObservable
     public Text timerText;
 
     private float timer;
+    private float intensityChangeDuration = 5f; // Продолжительность плавного изменения интенсивности
+    private float intensityChangeTimer; // Таймер для изменения интенсивности
+    private float startIntensity; // Начальное значение интенсивности
+    private float targetIntensity; // Целевое значение интенсивности
 
     private void Start()
     {
         timer = updateInterval;
+        intensityChangeTimer = intensityChangeDuration;
+        startIntensity = globalLight.intensity;
+        targetIntensity = isDayTime ? dayIntensity : nightIntensity;
     }
 
     private void Update()
@@ -66,6 +73,14 @@ public class GlobalTimer : MonoBehaviourPunCallbacks, IPunObservable
             {
                 UpdateTimerUI("Night", nightTimer);
             }
+
+            if (intensityChangeTimer < intensityChangeDuration)
+            {
+                intensityChangeTimer += Time.deltaTime;
+
+                float t = Mathf.Clamp01(intensityChangeTimer / intensityChangeDuration);
+                globalLight.intensity = Mathf.Lerp(startIntensity, targetIntensity, t);
+            }
         }
     }
 
@@ -92,8 +107,11 @@ public class GlobalTimer : MonoBehaviourPunCallbacks, IPunObservable
     {
         // Add serialization logic here if necessary
     }
+
     private void UpdateLightIntensity()
     {
-        globalLight.intensity = isDayTime ? dayIntensity : nightIntensity;
+        startIntensity = globalLight.intensity;
+        targetIntensity = isDayTime ? dayIntensity : nightIntensity;
+        intensityChangeTimer = 0f;
     }
 }
