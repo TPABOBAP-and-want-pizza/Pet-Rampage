@@ -21,11 +21,30 @@ public class Zombie : MonoBehaviourPun, ISloweable, IPursue
     private bool night = false;
     private bool vertolot = false;
     [SerializeField] Transform vecVertorlot;
+    [Header("Zombie Animation Settings")]
+    public Animator zombieAnimator;
+    [SerializeField] SpriteRenderer zombieSpriteRenderer;
 
     void Start()
     {
         currentSpeed = maxSpeed;
         //pursuedTransform = GameObject.FindGameObjectWithTag("Player").transform;
+        if (zombieAnimator == null)
+        {
+            zombieAnimator = GetComponent<Animator>();
+            if (zombieAnimator == null)
+            {
+                Debug.LogError("Animator component not found!");
+            }
+        }
+        if (zombieSpriteRenderer == null)
+        {
+            zombieSpriteRenderer = GetComponentInChildren<SpriteRenderer>(); // Может потребоваться изменить способ поиска
+            if (zombieSpriteRenderer == null)
+            {
+                Debug.LogError("SpriteRenderer component not found!");
+            }
+        }
     }
 
     void Update()
@@ -42,9 +61,24 @@ public class Zombie : MonoBehaviourPun, ISloweable, IPursue
             currentSpeed = maxSpeed;
         }
 
+
         if (pursuedTransform != null)
         {
             Following();
+            zombieAnimator.SetBool("Is_walk", true); // Устанавливаем переменную для анимации ходьбы
+            zombieAnimator.SetBool("Is_attack", false); // Сбрасываем переменную для анимации атаки
+
+            float rotationZ = transform.eulerAngles.z;
+            zombieSpriteRenderer.flipY = (rotationZ >= -270 && rotationZ <= -90) || (rotationZ >= 90 && rotationZ <= 270);
+        }
+        else
+        {
+
+
+
+            // Нет цели для преследования, значит зомби стоит на месте
+            zombieAnimator.SetBool("Is_walk", false); // Сбрасываем переменную для анимации ходьбы
+            zombieAnimator.SetBool("Is_attack", false); // Сбрасываем переменную для анимации атаки
         }
     }
 
@@ -67,16 +101,19 @@ public class Zombie : MonoBehaviourPun, ISloweable, IPursue
             GameObject temp = collision.gameObject;
             if (temp.GetComponent<IDamageTaker>() != null && (temp.tag == "Player" || temp.layer == 14)) //14 = block
             {
+                zombieAnimator.SetBool("Is_attack", true);
                 Debug.Log("Attack");
                 Invoke("NormaliseSpeed", 1f);
                 Invoke("SetCanAttackTrue", attackDelay);
                 canAttack = false;
-                if(!isNight)
+                if (!isNight)
                     currentSpeed = 0f;
 
                 collision.gameObject.GetComponent<IDamageTaker>().TakeDamage(damage);
             }
+            
         }
+
     }
     public void StartTimer()
     {
@@ -102,5 +139,6 @@ public class Zombie : MonoBehaviourPun, ISloweable, IPursue
     private void SetCanAttackTrue()
     {
         canAttack = true;
+
     }
 }
