@@ -1,5 +1,4 @@
 using Photon.Pun;
-using Photon.Realtime;
 using UnityEngine;
 using UnityEngine.Rendering.Universal;
 using UnityEngine.UI;
@@ -9,109 +8,103 @@ public class GlobalTimer : MonoBehaviourPunCallbacks, IPunObservable
     [SerializeField]
     private Light2D globalLight;
 
-    private float dayTimer = 30f; // 3 минуты
-    private float nightTimer = 20f; // 1.5 минуты
-    private bool isDayTime = true;
-    private float updateInterval = 1.0f; // Интервал обновления таймера
-    public float dayIntensity = 1f;
-    public float nightIntensity = 0f;
+    public float maxDayIntensity = 1f;
+    public float maxNightIntensity = 0f;
 
     public Text timerText;
 
-    private float timer;
-    private float intensityChangeDuration = 5f; // Продолжительность плавного изменения интенсивности
-    private float intensityChangeTimer; // Таймер для изменения интенсивности
-    private float startIntensity; // Начальное значение интенсивности
-    private float targetIntensity; // Целевое значение интенсивности
-
-    private void Start()
-    {
-        timer = updateInterval;
-        intensityChangeTimer = intensityChangeDuration;
-        startIntensity = globalLight.intensity;
-        targetIntensity = isDayTime ? dayIntensity : nightIntensity;
-    }
+    private float dayDuration = 30f; // Длительность дня
+    private float nightDuration = 20f; // Длительность ночи
+    private bool isDayTime = true;
+    private float timeOfDay = 0f; // Текущее время суток
 
     private void Update()
     {
-        if (!PhotonNetwork.IsMasterClient)
-            return;
-
-        timer -= Time.deltaTime;
-        if (timer <= 0)
+        if (PhotonNetwork.IsMasterClient)
         {
-            timer = updateInterval;
-
             if (isDayTime)
             {
-                dayTimer -= updateInterval;
-                if (dayTimer <= 0)
+                if (timeOfDay <= dayDuration / 2) // Половина дня
+                {
+                    float normalizedTime = timeOfDay / (dayDuration / 2);
+                    float targetIntensity = Mathf.Lerp(maxNightIntensity, maxDayIntensity, normalizedTime);
+                    globalLight.intensity = targetIntensity;
+                }
+                else
+                {
+                    globalLight.intensity = maxDayIntensity;
+                }
+
+                timeOfDay += Time.deltaTime;
+                if (timeOfDay >= dayDuration)
                 {
                     isDayTime = false;
-                    dayTimer = 0;
-                    nightTimer = 20f; // Сбросить таймер ночи при начале дня
-                    UpdateLightIntensity();
+                    timeOfDay = 0f;
                 }
             }
             else
             {
-                nightTimer -= updateInterval;
-                if (nightTimer <= 0)
+                if (timeOfDay <= nightDuration / 2) // Половина ночи
+                {
+                    float normalizedTime = timeOfDay / (nightDuration / 2);
+                    float targetIntensity = Mathf.Lerp(maxDayIntensity, maxNightIntensity, normalizedTime);
+                    globalLight.intensity = targetIntensity;
+                }
+                else
+                {
+                    globalLight.intensity = maxNightIntensity;
+                }
+
+                timeOfDay += Time.deltaTime;
+                if (timeOfDay >= nightDuration)
                 {
                     isDayTime = true;
-                    nightTimer = 0;
-                    dayTimer = 30f; // Сбросить таймер дня при начале ночи
-                    UpdateLightIntensity();
+                    timeOfDay = 0f;
                 }
             }
 
-            if (isDayTime)
-            {
-                UpdateTimerUI("Day", dayTimer);
-            }
-            else
-            {
-                UpdateTimerUI("Night", nightTimer);
-            }
+            UpdateTimerUI();
 
-            if (intensityChangeTimer < intensityChangeDuration)
-            {
-                intensityChangeTimer += Time.deltaTime;
-
-                float t = Mathf.Clamp01(intensityChangeTimer / intensityChangeDuration);
-                globalLight.intensity = Mathf.Lerp(startIntensity, targetIntensity, t);
-            }
+            photonView.RPC("SyncTimerAndLightIntensity", RpcTarget.Others, timeOfDay, globalLight.intensity, isDayTime);
         }
     }
 
-    private void UpdateTimerUI(string timeOfDay, float timer)
+    private void UpdateTimerUI()
     {
-        int minutes = Mathf.FloorToInt(timer / 60F);
-        int seconds = Mathf.FloorToInt(timer - minutes * 60);
-        string formatTime = string.Format("{0} {1:0}:{2:00}", timeOfDay, minutes, seconds);
+        string timeOfDayText = isDayTime ? "Day" : "Night";
+        int minutes = Mathf.FloorToInt(timeOfDay / 60F);
+        int seconds = Mathf.FloorToInt(timeOfDay - minutes * 60);
+        string formatTime = string.Format("{0} {1:0}:{2:00}", timeOfDayText, minutes, seconds);
         timerText.text = formatTime;
-
-        if (PhotonNetwork.IsMasterClient)
-        {
-            photonView.RPC("SyncTimer", RpcTarget.Others, timeOfDay, timer);
-        }
     }
 
     [PunRPC]
-    private void SyncTimer(string timeOfDay, float timer)
+    private void SyncTimerAndLightIntensity(float timeOfDayValue, float lightIntensity, bool isDay)
     {
-        UpdateTimerUI(timeOfDay, timer);
+        timeOfDay = timeOfDayValue;
+        globalLight.intensity = lightIntensity;
+        isDayTime = isDay;
+
+        UpdateTimerUI();
     }
 
     public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
     {
-        // Add serialization logic here if necessary
-    }
+        if (stream.IsWriting)
+        {
+            // Send data to other players
+            stream.SendNext(timeOfDay);
+            stream.SendNext(globalLight.intensity);
+            stream.SendNext(isDayTime);
+        }
+        else
+        {
+            // Receive data from the network
+            timeOfDay = (float)stream.ReceiveNext();
+            globalLight.intensity = (float)stream.ReceiveNext();
+            isDayTime = (bool)stream.ReceiveNext();
 
-    private void UpdateLightIntensity()
-    {
-        startIntensity = globalLight.intensity;
-        targetIntensity = isDayTime ? dayIntensity : nightIntensity;
-        intensityChangeTimer = 0f;
+            UpdateTimerUI();
+        }
     }
 }
