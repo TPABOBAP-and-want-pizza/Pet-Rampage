@@ -16,51 +16,45 @@ public class GlobalTimer : MonoBehaviourPunCallbacks, IPunObservable
     private float dayDuration = 30f; // Длительность дня
     private float nightDuration = 20f; // Длительность ночи
     private bool isDayTime = true;
-    private float timeOfDay = 0f; // Текущее время суток
+    private float timeOfDay = 30f; // Начальное значение времени
 
     private void Update()
     {
         if (PhotonNetwork.IsMasterClient)
         {
+            float normalizedTime;
             if (isDayTime)
             {
-                if (timeOfDay <= dayDuration / 2) // Половина дня
+                if (timeOfDay > 15f) // Если время суток меняется от 30 до 15
                 {
-                    float normalizedTime = timeOfDay / (dayDuration / 2);
-                    float targetIntensity = Mathf.Lerp(maxNightIntensity, maxDayIntensity, normalizedTime);
-                    globalLight.intensity = targetIntensity;
+                    normalizedTime = Mathf.Lerp(0.5f, 1f, 1f - ((timeOfDay - 15f) / 15f));
                 }
-                else
+                else // Если время суток меняется от 15 до 0
                 {
-                    globalLight.intensity = maxDayIntensity;
-                }
-
-                timeOfDay += Time.deltaTime;
-                if (timeOfDay >= dayDuration)
-                {
-                    isDayTime = false;
-                    timeOfDay = 0f;
+                    normalizedTime = Mathf.Lerp(1f, 0.5f, 1f - (timeOfDay / 15f));
                 }
             }
-            else
+            else // Для ночи
             {
-                if (timeOfDay <= nightDuration / 2) // Половина ночи
+                if (timeOfDay > 10f) // Если время суток меняется от 20 до 10
                 {
-                    float normalizedTime = timeOfDay / (nightDuration / 2);
-                    float targetIntensity = Mathf.Lerp(maxDayIntensity, maxNightIntensity, normalizedTime);
-                    globalLight.intensity = targetIntensity;
+                    normalizedTime = Mathf.Lerp(0.5f, 0f, 1f - ((timeOfDay - 10f) / 10f));
                 }
-                else
+                else // Если время суток меняется от 10 до 0
                 {
-                    globalLight.intensity = maxNightIntensity;
+                    normalizedTime = Mathf.Lerp(0f, 0.5f, 1f - (timeOfDay / 10f));
                 }
+            }
 
-                timeOfDay += Time.deltaTime;
-                if (timeOfDay >= nightDuration)
-                {
-                    isDayTime = true;
-                    timeOfDay = 0f;
-                }
+            float targetIntensity = Mathf.Lerp(maxNightIntensity, maxDayIntensity, normalizedTime);
+            globalLight.intensity = targetIntensity;
+
+            timeOfDay -= Time.deltaTime;
+
+            if (timeOfDay <= 0f)
+            {
+                isDayTime = !isDayTime;
+                timeOfDay = isDayTime ? dayDuration : nightDuration;
             }
 
             UpdateTimerUI();
