@@ -44,8 +44,9 @@ public class Player : MonoBehaviourPun
             highlightedSlotIndex += (scrollInput > 0f) ? -1 : 1;
 
             highlightedSlotIndex = (highlightedSlotIndex + inventory.Slots.Length) % inventory.Slots.Length;
-            InstantiateItemInHand();
             HighlightSelectedSlot();
+            InstantiateItemInHand();
+            
         }
     }
     public void InstantiateItemInHand()
