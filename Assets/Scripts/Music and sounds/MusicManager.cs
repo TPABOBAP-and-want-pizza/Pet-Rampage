@@ -11,7 +11,16 @@ public class MusicManager : MonoBehaviour
     private void Start()
     {
         audioSource = GetComponent<AudioSource>();
-        StartCoroutine(PlayMusic());
+
+        // ��������, �� ���������� ��-������ ������� �����
+        if (musicTracks.Length > 0)
+        {
+            StartCoroutine(PlayMusic());
+        }
+        else
+        {
+            Debug.LogError("no music for MusicManager.");
+        }
     }
 
     private void Awake()
@@ -34,6 +43,8 @@ public class MusicManager : MonoBehaviour
             AudioClip randomTrack = musicTracks[Random.Range(0, musicTracks.Length)];
             audioSource.clip = randomTrack;
             audioSource.Play();
+
+            Debug.Log($"randomTrack.length = {randomTrack.length}");
             yield return new WaitForSeconds(randomTrack.length);
         }
     }
