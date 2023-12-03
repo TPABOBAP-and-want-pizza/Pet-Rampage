@@ -98,7 +98,7 @@ LightmapSettings:
     m_TrainingDataDestination: TrainingData
     m_LightProbeSampleCountMultiplier: 4
   m_LightingDataAsset: {fileID: 0}
-  m_LightingSettings: {fileID: 0}
+  m_LightingSettings: {fileID: 4890085278179872738, guid: fc3b87f4cc1a86b4885ed7cb7664ff42, type: 2}
 --- !u!196 &4
 NavMeshSettings:
   serializedVersion: 2
@@ -379,6 +379,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1690351760}
   - component: {fileID: 1690351761}
+  - component: {fileID: 1690351762}
   m_Layer: 0
   m_Name: ConnectToServer
   m_TagString: Untagged
@@ -413,6 +414,28 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 74030b444e74fa34d8bf7b858c3fcc23, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &1690351762
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1690351759}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aa584fbee541324448dd18d8409c7a41, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ObservedComponentsFoldoutOpen: 1
+  Group: 0
+  prefixField: -1
+  Synchronization: 3
+  OwnershipTransfer: 0
+  observableSearch: 2
+  ObservedComponents: []
+  sceneViewId: 196
+  InstantiationId: 0
+  isRuntimeInstantiated: 0
 --- !u!1 &1728596617
 GameObject:
   m_ObjectHideFlags: 0
