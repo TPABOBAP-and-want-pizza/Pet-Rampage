@@ -13,11 +13,6 @@ public class GameManager : MonoBehaviour
     {
         IsNight = isNight;
         night = IsNight;
-        if (!IsNight)
-        {
-            Day++;
-            day = Day;
-        }
     }
     public void SetDay(int day)
     {
