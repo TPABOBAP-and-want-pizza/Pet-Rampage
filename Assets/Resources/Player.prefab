@@ -61,6 +61,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 81183cf3655d98649974ecde04540051, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  pursuedAreaCollider: {fileID: 7231946656893829754}
+  multiplier: 3
 --- !u!1 &1623134058499945961
 GameObject:
   m_ObjectHideFlags: 0

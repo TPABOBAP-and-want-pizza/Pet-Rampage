@@ -167,6 +167,7 @@ MonoBehaviour:
   damage: 10
   attackDelay: 1
   maxSpeed: 2
+  nightSpeed: 4
   slowdown: 2
 --- !u!114 &-508789516028222883
 MonoBehaviour:

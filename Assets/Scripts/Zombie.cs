@@ -11,11 +11,15 @@ public class Zombie : MonoBehaviourPun, ISloweable, IPursue
     [SerializeField] float attackDelay = 2f;
     private bool canAttack = true;
     [SerializeField] float maxSpeed = 2f;
+    [SerializeField] float nightSpeed = 4f;
     [SerializeField] float slowdown = 2f;
     private float currentSpeed;
     public Transform PursueTransform { get { return pursuedTransform; } set { pursuedTransform = value; } }
 
     public bool isInPursueZone { get; set; } = false;
+    public bool isNight { get; set; } = false;
+    private bool night = false;
+    private bool vertolot = false;
 
     void Start()
     {
@@ -25,6 +29,18 @@ public class Zombie : MonoBehaviourPun, ISloweable, IPursue
 
     void Update()
     {
+        if(isNight && !night)
+        {
+            night = true;
+            vertolot = Random.Range(1, 3) == 1;
+            currentSpeed = nightSpeed;
+        }
+        else if(!isNight && night)
+        {
+            night = false;
+            currentSpeed = maxSpeed;
+        }
+
         if (pursuedTransform != null)
         {
             Following();
@@ -34,6 +50,10 @@ public class Zombie : MonoBehaviourPun, ISloweable, IPursue
     private void Following()
     {
         Vector3 direction = pursuedTransform.position - transform.position;
+        if (isNight && vertolot)
+        {
+            direction = Vector3.zero - transform.position; 
+        }
         float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
         transform.rotation = Quaternion.AngleAxis(angle, Vector3.forward);
 
@@ -50,7 +70,9 @@ public class Zombie : MonoBehaviourPun, ISloweable, IPursue
                 Invoke("NormaliseSpeed", 1f);
                 Invoke("SetCanAttackTrue", attackDelay);
                 canAttack = false;
-                currentSpeed = 0f;
+                if(!isNight)
+                    currentSpeed = 0f;
+
                 collision.gameObject.GetComponent<IDamageTaker>().TakeDamage(damage);
             }
         }
@@ -72,7 +94,9 @@ public class Zombie : MonoBehaviourPun, ISloweable, IPursue
     }
     private void NormaliseSpeed()
     {
-        currentSpeed = maxSpeed;
+        if (!isNight)
+            currentSpeed = maxSpeed;
+        else currentSpeed = nightSpeed;
     }
     private void SetCanAttackTrue()
     {
