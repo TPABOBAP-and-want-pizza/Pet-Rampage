@@ -12,13 +12,15 @@ public class GlobalTimer : MonoBehaviourPunCallbacks, IPunObservable
     public float maxDayIntensity = 1f;
     public float maxNightIntensity = 0f;
 
+    public Text dayCounterText;
     public Text timerText;
 
-    private float dayDuration = 30f; // Длительность дня
-    private float nightDuration = 20f; // Длительность ночи
+    private float dayDuration = 10f; // Длительность дня
+    private float nightDuration = 5f; // Длительность ночи
     private bool isDayTime = true;
-    private float timeOfDay = 30f; // Начальное значение времени
+    private float timeOfDay = 10f; // Начальное значение времени
     public bool IsDayTime => isDayTime;
+    private int daysPassed = 0;
 
     private void Update()
     {
@@ -35,6 +37,12 @@ public class GlobalTimer : MonoBehaviourPunCallbacks, IPunObservable
                 {
                     normalizedTime = Mathf.Lerp(1f, 0.5f, 1f - (timeOfDay / 15f));
                 }
+
+
+                
+                UpdateTimerUI();
+                photonView.RPC("SyncTimerAndLightIntensity", RpcTarget.Others, timeOfDay, globalLight.intensity, isDayTime, daysPassed);
+
             }
             else // Для ночи
             {
@@ -46,6 +54,10 @@ public class GlobalTimer : MonoBehaviourPunCallbacks, IPunObservable
                 {
                     normalizedTime = Mathf.Lerp(0f, 0.5f, 1f - (timeOfDay / 10f));
                 }
+                if (timeOfDay <= 1f)
+                {
+
+                }
             }
 
             float targetIntensity = Mathf.Lerp(maxNightIntensity, maxDayIntensity, normalizedTime);
@@ -53,16 +65,23 @@ public class GlobalTimer : MonoBehaviourPunCallbacks, IPunObservable
 
             timeOfDay -= Time.deltaTime;
 
-            if (timeOfDay <= 0f)
+            if (timeOfDay <= 1f)
             {
                 isDayTime = !isDayTime;
                 manager.SetNightState(!isDayTime);
                 timeOfDay = isDayTime ? dayDuration : nightDuration;
+
+                if(isDayTime)
+                {
+                    daysPassed++;
+                    UpdateDayCounter();
+                }
+
             }
 
             UpdateTimerUI();
 
-            photonView.RPC("SyncTimerAndLightIntensity", RpcTarget.Others, timeOfDay, globalLight.intensity, isDayTime);
+            photonView.RPC("SyncTimerAndLightIntensity", RpcTarget.Others, timeOfDay, globalLight.intensity, isDayTime, daysPassed);
         }
     }
 
@@ -73,16 +92,21 @@ public class GlobalTimer : MonoBehaviourPunCallbacks, IPunObservable
         int seconds = Mathf.FloorToInt(timeOfDay - minutes * 60);
         string formatTime = string.Format("{0} {1:0}:{2:00}", timeOfDayText, minutes, seconds);
         timerText.text = formatTime;
+        GameManager.Day = daysPassed;
+
     }
 
     [PunRPC]
-    private void SyncTimerAndLightIntensity(float timeOfDayValue, float lightIntensity, bool isDay)
+    private void SyncTimerAndLightIntensity(float timeOfDayValue, float lightIntensity, bool isDay, int days)
     {
         timeOfDay = timeOfDayValue;
         globalLight.intensity = lightIntensity;
         isDayTime = isDay;
+        daysPassed = days; // Обновляем значение daysPassed при получении данных от других игроков
 
         UpdateTimerUI();
+        UpdateDayCounter();
+
     }
 
     public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
@@ -93,6 +117,7 @@ public class GlobalTimer : MonoBehaviourPunCallbacks, IPunObservable
             stream.SendNext(timeOfDay);
             stream.SendNext(globalLight.intensity);
             stream.SendNext(isDayTime);
+            stream.SendNext(daysPassed); // Добавляем daysPassed в поток для передачи информации другим игрокам
         }
         else
         {
@@ -100,8 +125,19 @@ public class GlobalTimer : MonoBehaviourPunCallbacks, IPunObservable
             timeOfDay = (float)stream.ReceiveNext();
             globalLight.intensity = (float)stream.ReceiveNext();
             isDayTime = (bool)stream.ReceiveNext();
+            daysPassed = (int)stream.ReceiveNext(); // Принимаем информацию о daysPassed от других игроков
 
             UpdateTimerUI();
+            UpdateDayCounter();
         }
     }
+
+    private void UpdateDayCounter()
+    {
+        if (dayCounterText != null)
+        {
+            dayCounterText.text = "Day: " + daysPassed.ToString();
+        }
+    }
+
 }
