@@ -134,7 +134,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   sound: {fileID: 0}
-  maxHealth: 40
+  maxHealth: 80
 --- !u!114 &8233720470598895414
 MonoBehaviour:
   m_ObjectHideFlags: 0
