@@ -56,7 +56,7 @@ public class PlayerMovement : MonoBehaviourPunCallbacks, ISloweable
 
     private void Move()
     {
-        if (Input.GetKey(KeyCode.D))
+        if (Input.GetKey(KeyCode.D) || Input.GetKey(KeyCode.UpArrow)) 
         {
             spriteRenderer.flipX = false;
             transform.position += new Vector3(1, 0, 0) * currentSpeed * Time.deltaTime;
