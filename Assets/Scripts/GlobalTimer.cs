@@ -15,10 +15,10 @@ public class GlobalTimer : MonoBehaviourPunCallbacks, IPunObservable
     public Text dayCounterText;
     public Text timerText;
 
-    private float dayDuration = 10f; // Длительность дня
-    private float nightDuration = 5f; // Длительность ночи
+    private float dayDuration = 120f; // Длительность дня
+    private float nightDuration = 60f; // Длительность ночи
     private bool isDayTime = true;
-    private float timeOfDay = 10f; // Начальное значение времени
+    private float timeOfDay = 120f; // Начальное значение времени
     public bool IsDayTime => isDayTime;
     private int daysPassed = 0;
 
