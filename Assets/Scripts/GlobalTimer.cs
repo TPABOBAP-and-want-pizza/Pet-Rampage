@@ -29,13 +29,13 @@ public class GlobalTimer : MonoBehaviourPunCallbacks, IPunObservable
             float normalizedTime;
             if (isDayTime)
             {
-                if (timeOfDay > 15f) // Если время суток меняется от 30 до 15
+                if (timeOfDay > dayDuration/2) // Если время суток меняется от 30 до 15
                 {
-                    normalizedTime = Mathf.Lerp(0.5f, 1f, 1f - ((timeOfDay - 15f) / 15f));
+                    normalizedTime = Mathf.Lerp(0.5f, 1f, 1f - ((timeOfDay - dayDuration / 2) / (dayDuration / 2)));
                 }
                 else // Если время суток меняется от 15 до 0
                 {
-                    normalizedTime = Mathf.Lerp(1f, 0.5f, 1f - (timeOfDay / 15f));
+                    normalizedTime = Mathf.Lerp(1f, 0.5f, 1f - (timeOfDay / (dayDuration / 2)));
                 }
 
 
@@ -48,11 +48,11 @@ public class GlobalTimer : MonoBehaviourPunCallbacks, IPunObservable
             {
                 if (timeOfDay > 10f) // Если время суток меняется от 20 до 10
                 {
-                    normalizedTime = Mathf.Lerp(0.5f, 0f, 1f - ((timeOfDay - 10f) / 10f));
+                    normalizedTime = Mathf.Lerp(0.5f, 0f, 1f - ((timeOfDay - (nightDuration/2)) / (nightDuration / 2)));
                 }
                 else // Если время суток меняется от 10 до 0
                 {
-                    normalizedTime = Mathf.Lerp(0f, 0.5f, 1f - (timeOfDay / 10f));
+                    normalizedTime = Mathf.Lerp(0f, 0.5f, 1f - (timeOfDay / (nightDuration / 2)));
                 }
                 if (timeOfDay <= 1f)
                 {
