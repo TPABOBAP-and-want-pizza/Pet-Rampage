@@ -23,7 +23,7 @@ public class Respawn : MonoBehaviourPun
     }
     private void OnDestroy()
     {
-        if (photonView.IsMine)
+        if (photonView.IsMine && !GameManager.IsGameOver)
         {
             timer.transform.parent.gameObject.SetActive(true);
             timer.StartTimer(cooldown);

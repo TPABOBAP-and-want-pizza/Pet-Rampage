@@ -1,5 +1,4 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class MusicManager : MonoBehaviour
@@ -10,7 +9,16 @@ public class MusicManager : MonoBehaviour
     private void Start()
     {
         audioSource = GetComponent<AudioSource>();
-        StartCoroutine(PlayMusic());
+
+        // Перевірка, чи призначено які-небудь музичні треки
+        if (musicTracks.Length > 0)
+        {
+            StartCoroutine(PlayMusic());
+        }
+        else
+        {
+            Debug.LogError("no music for MusicManager.");
+        }
     }
 
     private IEnumerator PlayMusic()
@@ -20,8 +28,9 @@ public class MusicManager : MonoBehaviour
             AudioClip randomTrack = musicTracks[Random.Range(0, musicTracks.Length)];
 
             audioSource.clip = randomTrack;
-
             audioSource.Play();
+
+            Debug.Log($"randomTrack.length = {randomTrack.length}");
             yield return new WaitForSeconds(randomTrack.length);
         }
     }

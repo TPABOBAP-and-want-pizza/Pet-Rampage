@@ -1,15 +1,31 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using Photon.Pun;
+using TMPro;
 
 public class Helipad : MonoBehaviour
 {
     [SerializeField] private List<ItemInfo> infos = new List<ItemInfo>();
     [SerializeField] private int countStackableItems = 3;
     [SerializeField] private int countItems = 3;
+    private TextMeshProUGUI text;
     private int currentDay = 0;
-    
+
+    private void Start()
+    {
+        GameObject textGameObject = GameObject.FindGameObjectWithTag("GameOver");
+        if (textGameObject != null)
+        {
+            text = textGameObject.transform.GetComponent<TextMeshProUGUI>();
+            text.gameObject.SetActive(false);
+        }
+        else
+        {
+            Debug.LogError("helipad tmp error");
+        }
+    }
     private void Update()
     {
         if (currentDay != GameManager.Day)
@@ -47,7 +63,7 @@ public class Helipad : MonoBehaviour
     }
     public void OnDestroy()
     {
-        //гейм овер
-        //перех≥д на нову се÷ену
+        text.gameObject.SetActive(true);
+        GameManager.LiderboardWithDelay(5f);
     }
 }
