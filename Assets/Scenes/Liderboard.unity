@@ -338,7 +338,7 @@ GameObject:
   - component: {fileID: 156727699}
   - component: {fileID: 156727698}
   m_Layer: 5
-  m_Name: Button
+  m_Name: Button_go_to_Lobby
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -408,7 +408,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 156727699}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 765148489}
+        m_TargetAssemblyTypeName: SceneLoader, Assembly-CSharp
+        m_MethodName: LoadLobbyScene
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &156727699
 MonoBehaviour:
   m_ObjectHideFlags: 0
