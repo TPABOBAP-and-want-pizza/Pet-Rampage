@@ -33,7 +33,7 @@ public class SpawnPlayers : MonoBehaviourPunCallbacks
         {
             PhotonNetwork.InstantiateRoomObject(zombiePrefab.name, Vector3.zero, Quaternion.identity);
             SpawnTrees();
-            SpawnZombies(30);
+            SpawnZombies(45);
             hasSpawned = true;
         }
 
