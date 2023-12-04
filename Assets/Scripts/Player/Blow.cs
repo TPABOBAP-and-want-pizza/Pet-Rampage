@@ -5,6 +5,7 @@ using Photon.Pun;
 
 public class Blow : MonoBehaviourPun
 {
+    [SerializeField] Sound sound;
     [SerializeField] private int damage = 100;
     private Animator animator;
     private bool canBlow = true;
@@ -36,8 +37,11 @@ public class Blow : MonoBehaviourPun
     {
        Collider2D[] hits = Physics2D.OverlapCircleAll(transform.GetChild(0).position, 0.6f);
 
-        if (hits[0] != null)
+        if (hits[1] != null)
         {
+            if (!sound.IsPlaying && sound != null)
+                sound.PlayRandomSound();
+
             Attack(hits);
         }
     }

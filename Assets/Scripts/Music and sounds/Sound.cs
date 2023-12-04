@@ -14,7 +14,6 @@ public class Sound : MonoBehaviourPun
     {
         if (!IsPlaying)
         {
-            Debug.Log("PlaySound");
             IsPlaying = true;
             if(audioSrc == null)
             {
@@ -37,6 +36,32 @@ public class Sound : MonoBehaviourPun
 
         IsPlaying = false;
 
+        soundCoroutine = null;
+    }
+
+    public void PlaySound(AudioClip clip, float volume = 1f, float p1 = 0.85f, float p2 = 1.2f)
+    {
+        if (audioSrc != null)
+        {
+            if (soundCoroutine != null)
+            {
+                StopCoroutine(soundCoroutine);
+            }
+
+            audioSrc.Stop();
+            audioSrc.pitch = Random.Range(p1, p2);
+            audioSrc.volume = volume;
+            audioSrc.clip = clip;
+            audioSrc.Play();
+
+            StartCoroutine(WaitForSound(audioSrc.clip.length));
+        }
+    }
+    private IEnumerator WaitForSound(float duration)
+    {
+        yield return new WaitForSeconds(duration);
+
+        IsPlaying = false;
         soundCoroutine = null;
     }
 }

@@ -9,6 +9,7 @@ public class Apple : MonoBehaviourPun
     [SerializeField] private float requiredHoldTime = 1f;
     [SerializeField] private int countToRemove = 1;
     [SerializeField] private Sound sound;
+    [SerializeField] AudioClip clip;
     private bool holding = false;
     private float clickTime = 0f;
 
@@ -31,6 +32,7 @@ public class Apple : MonoBehaviourPun
             
             if (requiredHoldTime <= Time.time - clickTime)
             {
+                sound.PlaySound(clip);
                 Healing();
                 holding = false;
             }
