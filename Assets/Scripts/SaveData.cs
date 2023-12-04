@@ -4,7 +4,6 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-
 public class SaveData : MonoBehaviour
 {
     public TMPro.TextMeshProUGUI myScore;
@@ -19,15 +18,26 @@ public class SaveData : MonoBehaviour
             Photon.Realtime.Player[] players = PhotonNetwork.PlayerList;
 
             string allPlayerNames = "";
-            foreach (Photon.Realtime.Player player in players)
+
+            if (players.Length == 1)
             {
-                allPlayerNames += player.NickName + " ";
+                // ≈сли в комнате только один игрок, устанавливаем его им€
+                allPlayerNames = players[0].NickName;
+            }
+            else
+            {
+                // ≈сли в комнате несколько игроков, перебираем их имена и добавл€ем их к строке
+                foreach (Photon.Realtime.Player player in players)
+                {
+                    allPlayerNames += player.NickName + " ";
+                }
             }
 
             // ”станавливаем полученные имена игроков в myName
             myName.text = allPlayerNames;
         }
     }
+
     void Update()
     {
         // »спользуем currentScore вместо PlayerPrefs.GetInt("highscore")
@@ -38,9 +48,9 @@ public class SaveData : MonoBehaviour
     public void SendScore()
     {
 
-            PlayerPrefs.SetInt("highscore", currentScore);
-            HighScores.UploadScore(myName.text, currentScore);
-        
+        PlayerPrefs.SetInt("highscore", currentScore);
+        HighScores.UploadScore(myName.text, currentScore);
+
     }
     void OnEnable()
     {
@@ -48,11 +58,3 @@ public class SaveData : MonoBehaviour
         currentScore = GameManager.CurrentDayScore;
     }
 }
-
-
-
-
-
-
-
-
