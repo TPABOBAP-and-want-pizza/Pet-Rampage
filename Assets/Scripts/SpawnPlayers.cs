@@ -67,7 +67,7 @@ public class SpawnPlayers : MonoBehaviourPunCallbacks
     }
     public void SpawnPlayer()
     {
-        Vector2 randomPosition = new Vector2(Random.Range(6, 12), Random.Range(29, 34));
+        Vector2 randomPosition = new Vector2(Random.Range(8, 12), Random.Range(39, 44));
         PhotonNetwork.Instantiate(playerPrefab.name, randomPosition, Quaternion.identity);
     }
 
