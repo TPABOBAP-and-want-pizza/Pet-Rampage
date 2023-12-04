@@ -51,7 +51,6 @@ public class PlayerMovement : MonoBehaviourPunCallbacks, ISloweable
 
             isMoving = (Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.S) || Input.GetKey(KeyCode.D));
             animator.SetFloat("Move", isMoving ? 1 : 0); // ≈сли игрок движетс€, устанавливаем значение 1, иначе 0
-            
         }
     }
 

@@ -3,6 +3,7 @@ using UnityEngine;
 
 public class PlayerAnimations : MonoBehaviourPunCallbacks, IPunObservable
 {
+    [SerializeField] Sound sound;
     [SerializeField] private Animator animator;
     private int animNumber;
 
@@ -32,6 +33,13 @@ public class PlayerAnimations : MonoBehaviourPunCallbacks, IPunObservable
         {
             animNumber = (int)stream.ReceiveNext();
             animator.SetInteger("Anim_Number", animNumber);
+        }
+    }
+    private void PlaySound()
+    {
+        if (sound != null && !sound.IsPlaying)
+        {
+            sound.PlayRandomSound(0.5f);
         }
     }
 }
