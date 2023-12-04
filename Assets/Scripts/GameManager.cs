@@ -6,6 +6,7 @@ public class GameManager : MonoBehaviour
 {
     [SerializeField] private int day = 0;
     [SerializeField] private bool night;
+    public static int CurrentDayScore { get; private set; } = 0;
 
     public static bool IsNight { get; private set; }
     public static int Day { get; set; } = 0;
@@ -58,5 +59,7 @@ public class GameManager : MonoBehaviour
     {
         Debug.Log("Liderboar");
         SceneManager.LoadScene("Liderboard");
+        CurrentDayScore = Day;
     }
+
 }
