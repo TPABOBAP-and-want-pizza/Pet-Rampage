@@ -15,8 +15,8 @@ public class Apple : MonoBehaviourPun
 
     void Update()
     {
-        //if (photonView.IsMine)
-        //    return;
+        if (!photonView.IsMine)
+            return;
 
         if (Input.GetMouseButton(1))
         {
@@ -50,6 +50,10 @@ public class Apple : MonoBehaviourPun
             }
         }
         transform?.parent?.GetComponent<Player>().RemoveSelectedItem(countToRemove);
+        PhotonView.Destroy(gameObject);
+    }
+    private void OnDestroy()
+    {
         PhotonView.Destroy(gameObject);
     }
 }
