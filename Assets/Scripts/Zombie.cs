@@ -5,6 +5,7 @@ using Photon.Pun;
 
 public class Zombie : MonoBehaviourPun, ISloweable, IPursue
 {
+    [SerializeField] Sound sound;
     private Transform pursuedTransform;
     [SerializeField] float pursuedTime = 8f;
     [SerializeField] int damage = 10;
@@ -141,8 +142,9 @@ public class Zombie : MonoBehaviourPun, ISloweable, IPursue
     }
     private IEnumerator AttackCooldown()
     {
+        sound.PlayRandomSound();
         zombieAnimator.SetBool("Is_attack", true);
-        yield return new WaitForSeconds(0.5f); // ������ �� 2 �������
+        yield return new WaitForSeconds(1f); // ������ �� 2 �������
         zombieAnimator.SetBool("Is_attack", false);
         canAttack = true;
     }
