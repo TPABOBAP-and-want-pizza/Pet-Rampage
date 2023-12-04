@@ -10,6 +10,8 @@ GameObject:
   m_Component:
   - component: {fileID: 8798070900654036052}
   - component: {fileID: 8798070900654036053}
+  - component: {fileID: 4005773030560754597}
+  - component: {fileID: 3718937777826312893}
   - component: {fileID: 1146099962665144042}
   - component: {fileID: 8233720470598895414}
   - component: {fileID: 5353182586507930990}
@@ -90,6 +92,34 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!114 &4005773030560754597
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8798070900654036050}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 321e266c74c2bdd4f878a538a9576117, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  sound: {fileID: 3718937777826312893}
+--- !u!114 &3718937777826312893
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8798070900654036050}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8d26e73cb2964554e802c9c1b14f9be7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  sounds:
+  - {fileID: 8300000, guid: b1728a48a1184fe458c21f4fd4b51e38, type: 3}
+  - {fileID: 8300000, guid: 9fdebe9d94c85694083fc70f15a3285e, type: 3}
 --- !u!114 &1146099962665144042
 MonoBehaviour:
   m_ObjectHideFlags: 0
