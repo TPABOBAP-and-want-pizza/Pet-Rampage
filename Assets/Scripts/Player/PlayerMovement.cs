@@ -56,7 +56,7 @@ public class PlayerMovement : MonoBehaviourPunCallbacks, ISloweable
 
     private void Move()
     {
-        if (Input.GetKey(KeyCode.D) || Input.GetKey(KeyCode.UpArrow)) 
+        if (Input.GetKey(KeyCode.D)) 
         {
             spriteRenderer.flipX = false;
             transform.position += new Vector3(1, 0, 0) * currentSpeed * Time.deltaTime;
@@ -68,7 +68,7 @@ public class PlayerMovement : MonoBehaviourPunCallbacks, ISloweable
             transform.position += new Vector3(-1, 0, 0) * currentSpeed * Time.deltaTime;
             photonView.RPC("FlipSprite", RpcTarget.All, true);
         }
-        if (Input.GetKey(KeyCode.W))
+        if (Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.UpArrow))
         {
             transform.position += new Vector3(0, 1, 0) * currentSpeed * Time.deltaTime;
         }
