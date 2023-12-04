@@ -44,7 +44,7 @@ public class MusicManager : MonoBehaviour
             audioSource.clip = randomTrack;
             audioSource.Play();
 
-            Debug.Log($"randomTrack.length = {randomTrack.length}");
+            //Debug.Log($"randomTrack.length = {randomTrack.length}");
             yield return new WaitForSeconds(randomTrack.length);
         }
     }

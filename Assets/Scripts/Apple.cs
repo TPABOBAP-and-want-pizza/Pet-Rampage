@@ -8,6 +8,7 @@ public class Apple : MonoBehaviourPun
     [SerializeField] private int healing = 10;
     [SerializeField] private float requiredHoldTime = 1f;
     [SerializeField] private int countToRemove = 1;
+    [SerializeField] private Sound sound;
     private bool holding = false;
     private float clickTime = 0f;
 
@@ -24,9 +25,10 @@ public class Apple : MonoBehaviourPun
                 holding = true;
                 clickTime = Time.time;
             }
-
+            if(!sound.IsPlaying)
+                sound.PlayRandomSound();
             //висвітлення партиклів
-            //програвання звуку їждення
+            
             if (requiredHoldTime <= Time.time - clickTime)
             {
                 Healing();
