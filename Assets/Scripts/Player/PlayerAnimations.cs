@@ -39,7 +39,7 @@ public class PlayerAnimations : MonoBehaviourPunCallbacks, IPunObservable
     {
         if (sound != null && !sound.IsPlaying)
         {
-            sound.PlayRandomSound(0.5f);
+            sound.PlayRandomSound(0.3f);
         }
     }
 }
