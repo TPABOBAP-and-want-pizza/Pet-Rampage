@@ -16,5 +16,5 @@ MonoBehaviour:
   id: 3
   sprite: {fileID: 21300000, guid: 8cbe81bd38e9dca44a4615384dfd0cee, type: 3}
   stackable: 1
-  maxCount: 16
+  maxCount: 32
   placeable: 0
