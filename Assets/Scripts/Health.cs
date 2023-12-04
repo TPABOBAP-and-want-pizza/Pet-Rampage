@@ -6,6 +6,7 @@ using UnityEngine.UI;
 
 public class Health : MonoBehaviourPun, IDamageTaker
 {
+    [SerializeField] Sound sound;
     [SerializeField] int maxHealth = 100;
     private int currentHealth;
     private Image healthBar;
@@ -76,7 +77,10 @@ public class Health : MonoBehaviourPun, IDamageTaker
     {
         foreach (var renderer in spriteRenderers)
         {
-            renderer.color = red ? Color.red : Color.green; 
+            renderer.color = red ? Color.red : Color.green;
+
+            if (red && isPlayer && sound != null) 
+                sound.PlayRandomSound();
 
             yield return new WaitForSeconds(0.2f);
 

@@ -12,6 +12,7 @@ public class Shooting : MonoBehaviourPunCallbacks
     [SerializeField] GameObject bulletPrefab;
     [SerializeField] ItemInfo bulletInfo;
     [SerializeField] int resursesCount = 1;
+    [SerializeField] Sound sound;
     private Inventory playerInventory;
 
     private void Start()
@@ -60,10 +61,13 @@ public class Shooting : MonoBehaviourPunCallbacks
                     shootDirection, 
                     photonView.ViewID);
 
+                sound.PlayRandomSound();
+
                 playerInventory.RemoveItem(bulletInfo, resursesCount);
             }
         }
     }
+    [PunRPC]
     private void CanShootTrue()
     {
         canShoot = true;
